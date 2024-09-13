@@ -1,0 +1,646 @@
+\documentclass{ltjsarticle}
+% \usepackage[%
+%     textwidth=40\zw,
+%     lines=40,
+%     centering
+% ]{geometry}
+\input{preamble}
+\title{あ}
+\begin{document}
+
+\begin{align*}
+    & \lambda f (x) + (1 - \lambda) f(y) - f (\lambda x + (1 - \lambda) y) \\
+    &= \lambda x^{\transpose}Ax + (1 - \lambda) y^{\transpose} A y \\
+    &\mathrel{\hphantom{=}}{} - \lambda^2 x^{\transpose} A x  - \lambda (1 - \lambda) x^{\transpose} A y - \lambda (1 - \lambda) y^{\transpose} A x  - (1 - \lambda)^2 y^{\transpose} A y \\
+    &=  \lambda(1 - \lambda)x^{\transpose} A x + \lambda (1 - \lambda) y^{\transpose} A y
+     - \lambda (1 - \lambda) (x^{\transpose} + y^{\transpose}) A (x + y) \\
+    &= \lambda (1 - \lambda)(x^{\transpose} A x - y^{\transpose} A x - x^{\transpose} Ay + y^{\transpose}Ay) \\
+    &= \lambda(1 - \lambda)(x - y)^{\transpose} A (x - y) \geq 0
+\end{align*}
+
+\section{曲線の長さ}
+
+\(\tuple{M, g}\)をRiemann多様体とする．
+任意の点\(p \in M\)における方向微分\(\displaystyle \tpmbase{x_i}{p}\)を\(\partial_{x_i}\)のように略記する．
+また\(C^1\)級曲線\(\gamma \colon [t_0, t_1] \to M\)の時刻\(t = \tau\)における速度ベクトル\(\displaystyle d\gamma\left(\tpmbase{t}{\tau}\right)\)を\(\dot{\gamma}(\tau)\)と略記する．
+通常の微積分の意味での\(t\)に関する導関数も同様に\(\dot{\theta}, \dot{\varphi}\)のように表すことがある．
+\(C^1\)級曲線\(\gamma \colon [t_0, t_1] \to M\)の長さを
+\begin{align*}
+    L(\gamma) = \int_{t_0}^{t_1} \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} d\tau
+\end{align*}
+と表す．
+
+\begin{thmbox}
+\begin{proposition}
+\(\gamma \colon [t_0, t_1] \to M\)を\(C^1\)級曲線とする．
+\(C^1\)級狭義単調増加関数を\(u \colon [s_0, s_1] \to [t_0, t_1]\)について，
+\(\tilde{\gamma} := \gamma \circ u\)とすると
+\begin{align}
+    L(\tilde{\gamma}) = L(\gamma)
+    \mathlabel{great-circle-length-invariance}
+\end{align}
+が成り立つ．
+\end{proposition}
+\end{thmbox}
+
+\begin{proof}
+曲線上の任意の点\(\gamma(\tau)\)がその近傍の局所座標\(\psi \colon p \mapsto (x_1, \ldots, x_n)\)によって\((\psi \circ \gamma)(\tau) = (\gamma_1(\tau), \ldots, \gamma_n(\tau))\)と表されているとする．
+\(\tilde{\gamma} := \gamma \circ u, \tau = u(\sigma)\)とすると
+\begin{align*}
+    \frac{d\tilde{\gamma}}{ds}(\sigma)
+    &= d(\gamma \circ u)(\sigma) \\
+    &= d\gamma \left(du \left(\tpmbase{s}{\sigma}\right) \right) \\
+    &= d\gamma \left(\frac{du}{ds}(\sigma) \tpmbase{t}{u(\sigma)} \right) \\
+    &= \left(\frac{du}{dt}(\tau) \right)^{-1} d\gamma\left(\tpmbase{t}{\tau}\right) \\
+    &= \frac{1}{\dot{u}(\tau)} \dot{\gamma}(\tau)
+\end{align*}
+このとき
+\begin{align}
+    g_{\tilde{\gamma}(\sigma)}\left(\frac{d\tilde{\gamma}}{ds}(\sigma), \frac{d\tilde{\gamma}}{ds}(\sigma)\right)
+    = \frac{1}{(\dot{u}(\tau))^2}
+    g_{\gamma(\tau)}\left(\dot{\gamma}(\tau), \dot{\gamma}(\tau)\right).
+    \mathlabel{great-circle-unit-speed-metric}
+\end{align}
+したがって
+\begin{align*}
+    \int_{s_0}^{s_1} \sqrt{%
+        g_{\tilde{\gamma}(\sigma)}\left(\frac{d\tilde{\gamma}}{ds}(\sigma), \tilde{\gamma}(\sigma)\right)
+    } d\sigma
+    = \int_{t_0}^{t_1} \sqrt{%
+        g\left(\dot{\gamma}(\tau), \dot{\gamma}(\tau)\right)
+    } d\tau,
+\end{align*}
+すなわち\mathref{great-circle-length-invariance}が成り立つ．
+\end{proof}
+
+曲線\(\gamma \colon [t_0, t_1] \to M\)が正則である，すなわち任意の\(\tau \in [t_0, t_1]\)で\(\dot{\gamma}(\tau) \neq 0\)が成り立つとする．
+\(t_0\)から\(t\)までの\(\gamma\)の長さを表す関数\(\ell \colon [t_0, t_1] \to [0, L(\gamma)]\)は
+\begin{align*}
+    \ell(t) = \int_{t_0}^{t} \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} d \tau
+\end{align*}
+と表される．正則性の仮定より
+\begin{align*}
+    \frac{d\ell}{dt}(\tau) = \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} > 0
+\end{align*}
+であるから，\(\ell\)の逆関数\(u \colon [0, L(\gamma)] \to [t_0, t_1]\)が存在する．\mathref{great-circle-unit-speed-metric}から
+\begin{align}
+    g\left(\frac{d\tilde{\gamma}}{ds}(\sigma), \frac{d\tilde{\gamma}}{ds}(\sigma)\right) = 1
+    \mathlabel{great-circle-unit-speed}
+\end{align}
+が成り立つ．\(\sqrt{g_p(v, v)}\)をノルム\(\lVert v \rVert_p\)とみなすと，\mathref{great-circle-unit-speed}は速度（速度ベクトルの大きさ）が常に\(1\)であると解釈される．
+このような弧長を用いた再パラメーター付け(arc length reparametrization, unit speed reparametrization)について次が成り立つ．
+
+\begin{thmbox}
+\begin{proposition}
+\(\gamma \colon [t_0, t_1] \to M\)を\(C^1\)級曲線とする．
+\(k\)を定数として\(g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) = k\)が成り立つならば
+\begin{align*}
+    E(\gamma) := \int_{t_0}^{t_1} \frac{1}{2} g_{\gamma(\tau)}(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) d\tau
+\end{align*}
+ついて\(L(\gamma) \propto \sqrt{E(\gamma)}\)が成り立つ．
+\(E\)を\(\gamma\)の\keyword{エネルギー}(energy)という．
+\end{proposition}
+\end{thmbox}
+
+\begin{proof}
+\(L^2\)空間におけるCauchy--Schwarzの不等式により
+\begin{gather}
+    \int_{t_0}^{t_1} 1^{\inlinefrac{1}{2}} \cdot (g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)))^{\inlinefrac{1}{2}} d\tau
+    \leq
+    \left(\int_{t_0}^{t_1} 1 d\tau\right)^{\inlinefrac{1}{2}}
+    \left(\int_{t_0}^{t_1} g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) d\tau\right)^{\inlinefrac{1}{2}} \notag \\
+    \int_{t_0}^{t_1} \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} d\tau
+    \leq
+    \sqrt{t_1 - t_0}
+    \sqrt{%
+        \int_{t_0}^{t_1} g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) d\tau.
+    }
+    \mathlabel{great-circle-cauchy-schwarz}
+\end{gather}
+\(g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) = k\)より\mathref{great-circle-cauchy-schwarz}は等号で成立する．したがって\(L(\gamma) = \sqrt{t_1 - t_0}\sqrt{2 E(\gamma)} \propto E(\gamma)\)が成り立つ．
+\end{proof}
+
+\section{Banach空間における偏微分}
+% Postmodern Analysis p. 108
+\(\tuple{X_1, \lVert \placeholder \rVert_{X_1}}, \ldots, \tuple{X_n, \lVert \placeholder \rVert_{X_n}}\)をBanach空間とし，\(X\)をそれらの直積空間\(\tuple{X_1 \times \cdots \times X_n, \lVert \placeholder \rVert_{X_1} + \cdots + \lVert \placeholder \rVert_{X_n}}\)とする．
+\(f \colon X \to Y\)が\(x \in X\)において第\(j\)成分に関して(Fréchet)偏微分可能であるとは，ある有界線型作用素\(A(x) \colon X_j \to {\Real}\)が存在し，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(h_j \in X_j\)が\(\lVert h_j \rVert_{X_j} \leq \delta\)をみたすならば
+\begin{align}
+    \lVert f(x_1, \ldots, x_j + h_j, \ldots, x_n) - f(x) - A(x) h_j \rVert_{Y} \leq \varepsilon \lVert h_j \rVert_{X_j}
+    \mathlabel{partial-frechet-derivative}
+\end{align}
+ことをいう．このとき\(A(x)\)を\(f\)の第\(j\)成分に関する(Fréchet)偏導関数といい，\(D_jf(x)\)と表す．
+\(f\)が\(X\)において微分可能ならば，第\(j\)成分に関して偏微分可能である．
+このことは次のように確かめられる．
+写像\(\iota_j \colon V_j \to V_1 \times \cdots \times V_n\)を以下で定める．
+\begin{align*}
+    \iota_j \colon v \mapsto
+    (
+        0,
+        \ldots,
+        \overset{\overset{\scriptstyle j}{\smallsmile}}{v},
+        \ldots,
+        0
+    )
+\end{align*}
+このとき任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lVert h_j \rVert_{X} \leq \delta\)ならば
+\begin{align*}
+    & \lvert f(x_1, \ldots, x_j + h_j, \ldots, x_n) - f(x) - (Df(x) \circ \iota_j) h_j \rvert \\
+    & \leq \lvert f(x_1, \ldots, x_j + h_j, \ldots, x_n) - f(x) - Df(x) (0, \ldots, h_j, \ldots, 0) \rvert \\
+    & \leq \varepsilon \lVert (0, \ldots, h_j, \ldots, 0) \rVert_{X} = \varepsilon \lVert h_j \rVert_{X_j}
+\end{align*}
+が成り立つ．
+したがって各成分に関して偏微分可能であり，偏導関数はそれぞれ\(D_jf(x) = Df(x) \circ \iota_j\)と表すことができる．
+このことと\(Df(x)\)の線型性から
+\begin{align*}
+    Df(x)(h_1, \ldots, h_n)
+    &= Df(x) \left(\sum_{j = 1}^n (0, \ldots, h_j, \ldots, 0) \right) \\
+    &= \sum_{j = 1}^n (Df(x) \circ \iota_j)h_j \\
+    &= \sum_{j = 1}^n D_j(x) h_j
+\end{align*}
+が成り立つ．
+
+\section{変分法}
+次の問題
+
+集合\(C^1([a, b], {\Real}^n)\)を
+\begin{align*}
+    C^1_0([a, b], {\Real}^n) = \{f \in C^1([a, b], {\Real}^n) \mid f(a) = f(b) = 0\}
+\end{align*}
+で定める．
+このとき\(C^1_0([a, b], {\Real}^n)\)は\(C^1([a, b], {\Real}^n)\)の部分空間である．
+\begin{align*}
+    z(t) = \frac{(t - a)q_1 + (b - t)q_2}{b - a}
+\end{align*}
+
+\begin{thmbox}
+\begin{proposition}
+\(q \colon [a, b] \to {\Real}^n, f \colon [a, b] \times {\Real}^n \times {\Real}^n \to {\Real}\)をそれぞれ\(C^1\)級関数とする．
+汎関数\(J \colon C^1([a, b], {\Real}^n) \to {\Real}\)を
+\begin{align*}
+    J(q) = \int_a^b f(t, q(t), \dot{q}(t)) dt
+\end{align*}
+と定める．このとき\(E\)の\(q\)におけるFréchet導関数は
+\begin{align}
+    DJ(q) \colon \eta \mapsto \int_a^b \left( D_2 f(t, q(t), \dot{q}(t)) \eta(t)  + D_3 f(t, q(t), \dot{q}(t)) \dot{\eta}(t) \right) dt \mathlabel{variational-method-frechet-derivative}
+\end{align}
+で与えられる．
+\end{proposition}
+\end{thmbox}
+
+\begin{proof}
+\(f\)が微分可能であるから，第\(2\)成分と第\(3\)成分について偏微分することができる．すなわち任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lVert (h_1, h_2) \rVert_{{\Real}^n \times {\Real}^n} \leq \delta\)ならば
+\begin{align*}
+    & \lvert f(t, x_1 + h_1, x_2 + h_2) - f(t, x_1, x_2) - D_2 f(t, x_1, x_2) h_1 \\
+    & {} \mathbin{-} D_3 f (t, x_1, x_2) h_2  \rvert \leq \frac{\varepsilon}{b - a} ( \lVert h_1 \rVert_{{\Real}^n} + \lVert h_2 \rVert_{{\Real}^n} )
+\end{align*}
+が成り立つ．
+\(C^1\)級関数\(\eta \colon [a, b] \to {\Real}^n\)を\(\lVert \eta \rVert_{C^1([a, b], {\Real}^n)} \leq \delta\)となるようにとれば
+\begin{align*}
+    &\left\lvert J(q + \eta) - J(q) - \int_a^b  (D_2 f(t, q(t), \dot{q}(t)) \eta(t) + D_3 f (t, q(t), \dot{q}(t)) \dot{\eta}(t))  dt \right\rvert \\
+    &\leq \int_a^b \left\lvert f(t, q(t) + \eta(t), \dot{q}(t) + \dot{\eta}(t)) - f(t, q(t), \dot{q}(t)) \right. \\
+    & \mathrel{\hphantom{=}}{} \left. {} \mathbin{-} D_2 f(t, q(t), \dot{q}(t)) \eta(t) - D_3 f (t, q(t), \dot{q}(t)) \dot{\eta}(t)) \right\rvert dt \\
+    &\leq \int_a^b \varepsilon (\lVert \eta(t) \rVert_{{\Real}^n} + \lVert \dot{\eta}(t) \rVert_{{\Real}^n}) dt \\
+    &\leq \varepsilon \lVert \eta(t) \rVert_{C^1([a, b], {\Real}^n)}.
+\end{align*}
+よって\mathref{variational-method-frechet-derivative}が成り立つ．
+\end{proof}
+
+\begin{thmbox}
+\begin{theorem}[（変分法の基本補題）]
+\(f \colon [a, b] \to {\Real}\)を連続関数とする．
+任意の\(\eta \in C^1_0([a, b], {\Real})\)について
+\begin{align}
+    \int_a^b f(t) \dot{\eta}(t) dt = 0
+    \label{fundamental-lemma-assumption}
+\end{align}
+が成り立つならば，\(C\)を定数として，すべての\(t \in [a, b]\)で\(f(t) = C\)が成り立つ．
+\end{theorem}
+\end{thmbox}
+
+\begin{proof}
+定数\(C\)と写像\(g\)をそれぞれ
+\begin{gather*}
+    C = \frac{1}{b - a} \int_a^b f(t) dt, \quad g \colon t \mapsto \int_a^t (f(\tau) - C) d\tau
+\end{gather*}
+で定義する．
+このとき\(g\)は\(C^1\)級関数であり，\(g(a) = g(b) = 0, \dot{g}(t) = f(t) - C\)が成り立つ．
+したがって仮定\ref{fundamental-lemma-assumption}と併せて
+\begin{align*}
+    \int_a^b (f(t) - C)^2 dt
+    &= \int_a^b (f(t) - C) \dot{g}(t) dt \\
+    &= \int_a^b f(t)\dot{g}(t) dt - C \int_a^b \dot{g}(t)dt \\
+    &= 0 - [g(t)]_{t = a}^{t = b} \\
+    &= 0.
+\end{align*}
+したがってほとんどすべての\(t \in [a, b]\)で\(f = C\)が成り立つ．
+% Cohn Measure Theory 2.2 Properties That Hold Almost Everywhere Exercises 3
+しかし\(f\)が連続であったから実際はすべての\(t \in [a, b]\)で\(f = C\)である．
+\end{proof}
+
+\section{地球のモデル}
+
+地球上の\(2\)地点\(\symup{P}, \symup{Q}\)を最短で結ぶ曲線を求める．
+地中を掘って進むことは困難なので，それは不可能であるとする．
+単純化のため地表の構造物や地球が回転楕円体であることは無視し，地球を球面\(S^2 = \{\tuple{x_1, x_2, x_3} \mid x_1^2 + x_2^2 + x_3^2 = 1\}\)でモデル化する．
+
+計算をしやすくするため\(S^2\)の各点を球面座標系\(\tuple{\xi_0, \xi_1, \xi_2}\)で表す．
+動径\(\xi_0\)は\(1\)に固定されるため，\(\xi_0\)を省略して\(\tuple{\xi_1, \xi_2}\)のように書く．
+天頂角あるいは余緯度\(\xi_1\) \((0 < \xi_1 < \pi)\)は緯度に応じて
+\begin{numcases}
+    {\xi_1 =}
+    \frac{90^\circ - \alpha^\circ}{180^\circ} \pi
+        & \text{北緯\(\alpha^\circ\)のとき，} \nonumber \\[3pt]
+    \frac{90^\circ + \alpha^\circ}{180^\circ} \pi
+        & \text{南緯\(\alpha^\circ\)のとき} \nonumber
+\end{numcases}
+となる．
+一方，方位角\(\xi_2 \) \((0 \leq \xi_2 < 2\pi)\)は
+\begin{numcases}
+    {\xi_2 =}
+    \frac{\beta^\circ}{180^\circ} \pi
+        & \text{東経\(\beta^\circ\)のとき，} \nonumber \\[3pt]
+    \frac{360^\circ - \beta^\circ}{180^\circ} \pi
+        & \text{西経\(\beta^\circ\)のとき} \nonumber
+\end{numcases}
+となる．
+例えば北緯\(39^\circ\)，東経\(141^\circ\)の地点は\(\tuple{\xi_1, \xi_2} = \tuple{\inlinefrac{17\pi}{60}, \inlinefrac{47\pi}{60}}\)と表される．
+北極点\(\symup{N} = \tuple{0, 0, 1}\)と南極点\(\symup{S} = \tuple{0, 0, -1}\)は球面座標系では一意に表されないことに注意する．例えば\(\tuple{\xi_1, \xi_2} = \tuple{0, 0}, \tuple{0, \pi}\)はどちらも\(\symup{N}\)を表す．\(\symup{N}\)と\(\symup{S}\)を含む本初子午線は
+\begin{align*}
+    \Phi_0 = \left\{\tuple{x_1, x_2, x_3} \relmiddle{|} \text{\(\sqrt{x_1^2 + x_3^2} = 1\), \(x_1 > 0\), and \(x_2 = 0\)} \right\}
+\end{align*}
+と表すことができる．\(S^2 \setminus \Phi_0\)の局所座標系として球面座標系\(\xi = \tuple{\xi_1, \xi_2}\)をとる．
+\begin{gather*}
+    \xi \colon
+    \tuple{x_1, x_2, x_3}
+    \mapsto
+    \tuple{\xi_1, \xi_2}
+    =
+    \tuple{\arccos x_3, a(x_1, x_2)}, \\
+    a(x_1, x_2) =
+        \begin{cases}
+            \atantwo(\inlinefrac{x_2}{x_1}) + \pi & \text{if \(x_1 < 0\)}, \\
+            \atantwo(\inlinefrac{x_2}{x_1}) + 2 \pi & \text{if \(x_1 > 0\) and \(x_2 < 0\)}, \\
+            \atantwo(\inlinefrac{x_2}{x_1}) & \text{otherwise},
+        \end{cases} \\
+    \atantwo(y, x) =
+        \begin{cases}
+            \pi & \text{if \(x_1 < 0\) and \(x_2 = 0\)}, \\[3pt]
+            \displaystyle
+            2\arctan\left(\frac{x_2}{\sqrt{x_1^2 + x_2^2} + x_1}\right) & \text{otherwise.}
+        \end{cases}
+\end{gather*}
+写像\(\iota\)を\(S^2\)から\({\Real}^3\)への包含写像とする．
+\(S^2 \setminus \Phi_0\)の点\(p = (p_1, p_2)\)については\(\iota\)を
+\begin{align*}
+    \iota\colon
+    p
+    \mapsto
+    \begin{pmatrix}
+        \iota_1(p) \\
+        \iota_2(p) \\
+        \iota_3(p)
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \sin p_1 \cos p_2 \\
+        \sin p_1 \sin p_2 \\
+        \cos p_1
+    \end{pmatrix}
+\end{align*}
+と表すことができる．
+微分\(d\iota\)は方向微分\(\partial_{\xi_1}, \partial_{\xi_2}\)を次のように写す．
+\begin{gather*}
+    d\iota (\partial_{\xi_1})
+    = \sum_{i = 1}^3 \frac{\partial \iota_i}{\partial \xi_1}(p) \tpmbase{x_i}{\iota(p)}
+    =
+    \begin{pmatrix}
+        \cos p_1 \cos p_2 \\
+        \cos p_1 \sin p_2 \\
+        -\sin p_1
+    \end{pmatrix}, \\
+    d\iota(\partial_{\xi_2})
+    = \sum_{i = 1}^3 \frac{\partial \iota_i}{\partial \xi_2}(p) \tpmbase{x_i}{\iota(p)}
+    =
+    \begin{pmatrix}
+        - \sin p_1 \sin p_1 \\
+        \sin p_1 \cos p_2 \\
+        0
+    \end{pmatrix}.
+\end{gather*}
+ただし方向微分について，以下のような自然な同一視を行った．
+\begin{align*}
+    \tpmbase{x_1}{\iota(p)} = \begin{pmatrix}
+        1 \\ 0 \\ 0
+    \end{pmatrix},
+    \quad
+    \tpmbase{x_2}{\iota(p)} = \begin{pmatrix}
+        0 \\ 1 \\ 0
+    \end{pmatrix},
+    \quad
+    \tpmbase{x_3}{\iota(p)} = \begin{pmatrix}
+        0 \\ 0 \\ 1
+    \end{pmatrix}.
+\end{align*}
+ユークリッド空間\({\Real}^3\)の計量を\(g_\text{E}\)とし，
+\(\iota\)によって\(S^2 \setminus \Phi_0\)に誘導される計量を\(g_p\)とする．
+このとき
+\begin{gather*}
+    \begin{split}
+    g_p(\partial_{\xi_1}, \partial_{\xi_2})
+    =
+    g_\text{E}(d\iota(\partial_{\xi_1}), d\iota(\partial_{\xi_1}))
+    =
+    \begin{pmatrix}
+        \cos p_1 \cos p_2 \\
+        \cos p_1 \sin p_2 \\
+        - \sin p_1
+    \end{pmatrix}
+    \cdot
+    \begin{pmatrix}
+        \cos p_1 \cos p_2 \\
+        \cos p_1 \sin p_2 \\
+        - \sin p_1
+    \end{pmatrix}
+    = 1,
+    \end{split} \\
+    \begin{split}
+    g_p(\partial_{\xi_1}, \partial_{\xi_2})
+    =
+    g_\text{E}(d\iota (\partial_{\xi_1}), d\iota (\partial_{\xi_2}))
+    =
+    \begin{pmatrix}
+        \cos p_1 \cos p_2 \\
+        \cos p_1 \sin p_2 \\
+        - \sin p_1
+    \end{pmatrix}
+    \cdot
+    \begin{pmatrix}
+        - \sin p_1 \sin p_2 \\
+        \sin p_1 \cos p_2 \\
+        0
+    \end{pmatrix}
+    = 0,
+    \end{split} \\
+    \begin{split}
+    g_p(\partial_{\xi_1}, \partial_{\xi_2})
+    = g_\text{E}(d\iota (\partial_{\xi_2}), d\iota (\partial_{\xi_2}))
+    =
+    \begin{pmatrix}
+        - \sin p_1 \sin p_2 \\
+        \sin p_1 \cos p_2 \\
+        0
+    \end{pmatrix}
+    \cdot
+    \begin{pmatrix}
+        - \sin p_1 \sin p_2 \\
+        \sin p_1 \cos p_2 \\
+        0
+    \end{pmatrix}
+    = \sin^2 p_1
+    \end{split}
+\end{gather*}
+が成り立つ．したがって計量\(g_p\)に対応する行列\(G_p\)は
+\begin{align*}
+    G_p =
+    \begin{pmatrix}
+        g_p(\partial_{\xi_1}, \partial_{\xi_1}) & g_p(\partial_{\xi_1}, \partial_{\xi_2}) \\
+        g_p(\partial_{\xi_2}, \partial_{\xi_1}) & g_p(\partial_{\xi_2}, \partial_{\xi_2})
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        1 & 0 \\
+        0 & \sin^2 p_1
+    \end{pmatrix}
+\end{align*}
+となる．よって任意の\(v = v_1 \partial_{\xi_1} + v_2 \partial_{\xi_2} \in T_p S^2\)について
+\begin{align}
+    g_p(v, v)
+    &= v_1^2 g_p(\partial_{\xi_1}, \partial_{\xi_1}) + 2 v_1 v_2 g_p(\partial_{\xi_1}, \partial_{\xi_2}) + v_2^2 g_p(\partial_{\xi_2}, \partial_{\xi_2}) \notag \\
+    &= \begin{pmatrix} v_1 & v_2 \end{pmatrix} G_p \begin{pmatrix} v_1 \\ v_2 \end{pmatrix} \notag \\
+    &= v_1^2 + v_2^2 \sin^2 p_1 \mathlabel{great-circle-riemannian-metric}
+\end{align}
+となる．
+
+\section{地球上の2地点間の距離}
+記号は前節と同じものを使う．
+\(S^2 \setminus \Phi_0\)の異なる\(2\)点\(\symup{P} = \coord{\theta_{\symup{P}}, \varphi_{\symup{P}}}, \symup{Q} = \coord{\theta_{\symup{Q}}, \varphi_{\symup{Q}}}\)をとり，
+\(\symup{P}\)から\(\symup{Q}\)への正則曲線\(\gamma \colon [0, T] \to S^2 \setminus \Phi_0\)をとる．
+\(\gamma\)上の任意の点を\(q(t) = (\xi \circ \gamma)(t) = \coord{\theta(t), \varphi(t)}\)とする．
+ここで\(\theta \colon [0, T] \to (0, \pi)\)と\(\varphi \colon [0, T] \to (0, 2 \pi)\)である．
+曲線\(\gamma\)が正則であると仮定したため，暗に\(\theta, \varphi\)が\(C^1\)級であると仮定されていることに注意する．
+またこれらは予め弧長によって再パラメーター付けされているものとする．
+時刻\(t\)における\(\theta, \varphi\)の速度ベクトルを並べたものを\(v(t) = \coord{\dot{\theta}(t), \dot{\varphi}(t)}\)と表す．
+
+\mathref{great-circle-riemannian-metric}を参考にして，関数\(f \colon {\Real}^2 \times {\Real}^2 \to {\Real}\)を
+\begin{gather*}
+    f\colon (y, u) \mapsto \frac{u_1^2 + u_2^2 \sin^2 y_1}{2}
+    =
+    \begin{pmatrix}
+        u_1 & u_2
+    \end{pmatrix}
+    \begin{pmatrix}
+        1 & 0 \\
+        0 & \sin^2 y
+    \end{pmatrix}
+    \begin{pmatrix}
+        u_1 \\ u_2
+    \end{pmatrix}
+\end{gather*}
+と定義すると，\({\Real}^3\)における\(\gamma\)のエネルギーを
+\begin{align}
+    E(\gamma) = \int_0^T f(q(t), v(t)) dt
+    \mathlabel{great-circle-energy}
+\end{align}
+と表すことができる．\(f\)の\(y, u\)に関する偏導関数はそれぞれ
+\begin{gather*}
+    D_y f(y, u)
+    =
+    \begin{pmatrix}
+        u_2^2 \sin y_1 \cos y_1 & 0
+    \end{pmatrix},
+    \\
+    D_u f(y, u)
+    =
+    \begin{pmatrix}
+        u_1 & u_2
+    \end{pmatrix}
+    \begin{pmatrix}
+        1 & 0 \\
+        0 & \sin^2 y_1
+    \end{pmatrix}
+\end{gather*}
+である．
+\(C^1([0, T])\)の関数\(h\)で\(h(0) = h(T) = 0\)をみたすものを任意にとる．
+\(E\)の\(\gamma\)におけるFréchet導関数は
+\begin{align*}
+    & DE(\gamma)h \\
+    & = \int_0^T \left(D_u f(q(t), \dot{q}(t)) h(t) + D_v f(q(t), \dot{q}(t))\dot{h}(t)\right) dt \\
+    & = \int_0^T \left([f(q(t), \dot{q}(t))h(t)]_{t = 0}^{t = T} - \int_0 D_u f(q(t), \dot{q}(t)) \dot{h}(t) d\tau + D_v f(q(t), \dot{q}(t))\dot{h}(t)\right) dt \\
+    & = \int_0^T
+    \left(
+        \left(
+        - \int_0 D_u f(q(t), \dot{q}(t)) d\tau
+        +  D_v f(q(t), \dot{q}(t))
+        \right)
+        \dot{h}(t)
+    \right) dt
+\end{align*}
+と求められる．変分法の基本補題によって
+\begin{gather*}
+    D_v f(q(t), \dot{q}(t)) - \int_0 D_u f(q(t), \dot{q}(t)) d\tau = \begin{pmatrix} C_1 & C_2 \end{pmatrix} \\
+    \begin{pmatrix}
+        \dot{\theta}(t) & \dot{\varphi}(t)
+    \end{pmatrix}
+    \begin{pmatrix}
+        1 & 0 \\
+        0 & \sin^2 \theta(t)
+    \end{pmatrix}
+    =
+    \begin{pmatrix}\displaystyle \int_0^t \dot{\varphi}(\tau)\sin \theta(\tau) \cos \theta(\tau) d\tau + C_1 & C_2 \end{pmatrix}
+\end{gather*}
+成分ごとに比較して
+\begin{numcases}
+    {}
+    \dot{\theta}(t) = \int_0^t (\dot{\varphi}(\tau))^2 \sin \theta(\tau) \cos \theta(\tau) d\tau + C_1 \\
+    \dot{\varphi}(t) \sin^2 \theta(t) = C_2
+\end{numcases}
+を得る．
+右辺の形から\(\dot{\theta}, \dot{\varphi}\)もまた\(C^1\)級である．
+したがって両辺を\(t\)で微分して次のEuler--Lagrange方程式を得る．
+\begin{numcases}
+    {}
+    \ddot{\theta} = \dot{\varphi}^2 \sin \theta \cos \theta \mathlabel{great-circle-euler-lagrange1} \\
+    \ddot{\varphi} = - 2 \frac{\dot{\theta}}{\tan \theta}\dot{\varphi} \mathlabel{great-circle-euler-lagrange2}
+\end{numcases}
+ただし引数\(t\)は省略した．
+エネルギー（\mathref{great-circle-energy}）は\(t\)を陽に含んでいないため，\(\theta\)と\(\varphi\)の関係のみで定まる．
+したがって\(\theta\)を\(\varphi\)の関数とみなす．
+このとき\mathref{great-circle-euler-lagrange1}の左辺は
+\begin{align}
+    \ddot{\theta}
+    &= \frac{d}{dt}\left(\frac{d\theta}{d\varphi}\frac{d\varphi}{dt}\right) \notag \\
+    &= \left(\frac{d}{dt}\frac{d\theta}{d\varphi}\right)\frac{d\varphi}{dt}
+        + \left(\frac{d\theta}{d\varphi}\right)\frac{d^2\varphi}{dt^2} \notag \\
+    &= \left(\frac{d}{d\varphi}\frac{d\theta}{d\varphi}\frac{d\varphi}{dt}\right)\frac{d\varphi}{dt}
+        + \left(\frac{d\theta}{d\varphi}\right)\frac{d^2\varphi}{dt^2} \notag \\
+    &= \frac{d^2\theta}{d\varphi^2}\dot{\varphi}^2
+        + \left(\frac{d\theta}{d\varphi}\right)\ddot{\varphi}. \mathlabel{great-circle-ddot-theta}
+\end{align}
+\mathref{great-circle-euler-lagrange2}について同様に
+\begin{gather}
+    \ddot{\varphi} = -2 \frac{\dot{\varphi}^2}{\tan \theta}\frac{d\theta}{d\varphi} \mathlabel{great-circle-ddot-varphi}
+\end{gather}
+\mathref{great-circle-ddot-varphi}を\mathref{great-circle-ddot-theta}にして
+\begin{align*}
+    \ddot{\theta} = \frac{d^2\theta}{d\varphi^2}\dot{\varphi}^2
+        -2 \left(\frac{d\theta}{d\varphi}\right)^2 \frac{\dot{\varphi}^2}{\tan \theta}
+\end{align*}
+\mathref{great-circle-euler-lagrange1}に代入して
+\begin{gather}
+    \left(
+        \frac{d^2\theta}{d\varphi^2}
+        - \frac{2}{\tan \theta} \left(\frac{d\theta}{d\varphi}\right)^2
+        - \sin \theta \cos \theta
+    \right)
+    \dot{\varphi}^2
+    = 0 \mathlabel{great-circle-ode-product-form}.
+\end{gather}
+ここで
+\begin{align*}
+    \frac{d^2}{d \varphi^2}\frac{1}{\tan \theta}
+    &= \frac{d}{d\varphi} \left(- \frac{1}{\sin^2 \theta} \frac{d\theta}{d\varphi} \right) \\
+    &= 2 \frac{\cos \theta}{\sin^3 \theta}\left(\frac{d\theta}{d\varphi}\right)^2
+        -\frac{1}{\sin^2 \theta} \frac{d^2\theta}{d\varphi^2} \\
+    &= - \frac{1}{\sin^2 \theta}
+        \left(
+        \frac{d^2\theta}{d\varphi^2}
+        -
+        \frac{2}{\tan \theta}\left(\frac{d\theta}{d\varphi}\right)^2
+    \right)
+\end{align*}
+を用いて\mathref{great-circle-ode-product-form}を書き換えると
+\begin{align*}
+    \left(
+        \frac{d^2}{d\varphi^2}\frac{1}{\tan \theta}
+        + \frac{1}{\tan \theta}
+    \right)
+    \dot{\varphi}^2
+    = 0.
+\end{align*}
+したがって
+\begin{numcases}
+    {}
+    \dot{\varphi} = 0 \\
+    \frac{d^2}{d\varphi^2} \frac{1}{\tan \theta} + \frac{1}{\tan \theta} = 0 \mathlabel{great-circle-simple-harmonic-motion}
+\end{numcases}
+\mathref{great-circle-simple-harmonic-motion}は，\(y(\varphi) = \inlinefrac{1}{\tan \theta(\varphi)}\), \(D = \inlinefrac{d}{d\varphi}\)と置いて微分方程式
+\begin{align}
+    (D^2  + 1) y = 0 \label{great-circle-ode-operator}
+\end{align}
+に帰着される．
+代数方程式\(\lambda^2 + 1 = 0\)の根が\(\lambda = \pm i\)であるから\ref{great-circle-ode-operator}の解空間は\(\Span \{\realpart e^{i\varphi}, \imaginarypart e^{i\varphi}, \realpart e^{-i\varphi}, \imaginarypart e^{-i\varphi}\} = \Span \{\cos \varphi, \sin \varphi\}\)に等しい．
+したがって\(A, B\)を定数として
+\begin{align*}
+    y(\varphi) = \frac{1}{\tan \theta(\varphi)} = A \cos \varphi + B \sin \varphi
+\end{align*}
+と表すことができる．
+この両辺に\(\sin \theta\)をかけると
+\begin{gather}
+    \cos \theta  = A \sin \theta \cos \varphi + B \sin \theta \sin \varphi. \notag \\
+    \begin{pmatrix}
+        A \\
+        B \\
+        - 1 \\
+    \end{pmatrix}
+    \cdot
+    \begin{pmatrix}
+        \sin \theta \cos \varphi \\
+        \sin \theta \sin \varphi  \\
+        \cos \theta
+    \end{pmatrix}
+    = 0,
+\end{gather}
+となる．
+これは定ベクトル\(n := (A\ \ B\ \ -1)^{\transpose}\)と曲線\(\iota \circ \gamma\)上の点が常に直交していること，すなわち\(\gamma\)の像が大円の一部であることを表す．
+
+
+\(A, B\)を具体的に求めると
+\begin{numcases}
+    {}
+    \frac{1}{\tan \theta_{\symup{P}}} = A \cos \varphi_{\symup{P}} + B \sin \varphi_{\symup{P}} \nonumber \\
+    \frac{1}{\tan \theta_{\symup{Q}}} = A \cos \varphi_{\symup{Q}} + B \sin \varphi_{\symup{Q}} \nonumber
+\end{numcases}
+を解いて
+\begin{align*}
+    \begin{pmatrix}
+        A \\
+        B
+    \end{pmatrix}
+    &=
+    \begin{pmatrix}
+        \cos \varphi_{\symup{P}} & \sin \varphi_{\symup{P}} \\
+        \cos \varphi_{\symup{Q}} & \sin \varphi_{\symup{Q}}
+    \end{pmatrix}^{-1}
+    \begin{pmatrix}
+        \inlinefrac{1}{\tan \theta_{\symup{P}}} \\
+        \inlinefrac{1}{\tan \theta_{\symup{Q}}}
+    \end{pmatrix} \\
+    &=
+    \frac{1}{\sin \theta_{\symup{P}} \sin \theta_{\symup{Q}}\sin (\varphi_{\symup{Q}} - \varphi_{\symup{P}})}
+    \begin{pmatrix}
+        \sin \varphi_{\symup{Q}} & - \sin \varphi_{\symup{P}} \\
+        - \cos \varphi_{\symup{Q}} & \cos \varphi_{\symup{P}}
+    \end{pmatrix}
+    \begin{pmatrix}
+        \cos \theta_{\symup{P}} \sin \theta_{\symup{Q}} \\
+        \cos \theta_{\symup{Q}} \sin \theta_{\symup{P}}
+    \end{pmatrix}
+    \\
+    &=
+    \frac{1}{\sin \theta_{\symup{P}} \sin \theta_{\symup{Q}}\sin (\varphi_{\symup{Q}} - \varphi_{\symup{P}})}
+    \begin{pmatrix}
+        \symup{Q}_y \symup{P}_z - \symup{P}_y \symup{Q}_z  \\
+        - \symup{Q}_x \symup{P}_z + \symup{P}_x \symup{Q}_z
+    \end{pmatrix}
+\end{align*}
+\end{document}
