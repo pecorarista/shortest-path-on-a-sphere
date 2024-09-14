@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 $pdflatex = 'lualatex %O %S';
-$biber = 'biber --bblencoding=utf8 -u -U';
 $pdf_mode = 1;
+# $biber = 'biber --bblencoding=utf8 -u -U';
+$bibtex = 'pbibtex %O %B';
 $bibtex_use = 2;
 $makeindex = 'upmendex %O -o %D %S';
 if ($^O eq 'darwin') {

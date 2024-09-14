@@ -5,131 +5,102 @@
 %     centering
 % ]{geometry}
 \input{preamble}
-\title{あ}
+\usepackage{natbib}
+
+\pgfplotsset{%
+    defaultplot/.style={%
+        width=\textwidth,
+        height=1.05\textwidth,
+        x=1cm,
+        y=1cm,
+        axis lines=middle,
+        axis line style=thick,
+        xlabel={},
+        ylabel={},
+        xtick=\empty,
+        ytick=\empty,
+        xmin=-0.25,
+        xmax=5,
+        ymin=-0.25,
+        ymax=4.5,
+        samples=200,
+        clip=false
+    }
+}
+
+\title{地球上の2点間の距離の求め方}
+\author{宮澤 彬}
 \begin{document}
 
-\begin{align*}
-    & \lambda f (x) + (1 - \lambda) f(y) - f (\lambda x + (1 - \lambda) y) \\
-    &= \lambda x^{\transpose}Ax + (1 - \lambda) y^{\transpose} A y \\
-    &\mathrel{\hphantom{=}}{} - \lambda^2 x^{\transpose} A x  - \lambda (1 - \lambda) x^{\transpose} A y - \lambda (1 - \lambda) y^{\transpose} A x  - (1 - \lambda)^2 y^{\transpose} A y \\
-    &=  \lambda(1 - \lambda)x^{\transpose} A x + \lambda (1 - \lambda) y^{\transpose} A y
-     - \lambda (1 - \lambda) (x^{\transpose} + y^{\transpose}) A (x + y) \\
-    &= \lambda (1 - \lambda)(x^{\transpose} A x - y^{\transpose} A x - x^{\transpose} Ay + y^{\transpose}Ay) \\
-    &= \lambda(1 - \lambda)(x - y)^{\transpose} A (x - y) \geq 0
-\end{align*}
+\maketitle
 
-\section{曲線の長さ}
+\section{Banach空間における微分}
 
-\(\tuple{M, g}\)をRiemann多様体とする．
-任意の点\(p \in M\)における方向微分\(\displaystyle \tpmbase{x_i}{p}\)を\(\partial_{x_i}\)のように略記する．
-また\(C^1\)級曲線\(\gamma \colon [t_0, t_1] \to M\)の時刻\(t = \tau\)における速度ベクトル\(\displaystyle d\gamma\left(\tpmbase{t}{\tau}\right)\)を\(\dot{\gamma}(\tau)\)と略記する．
-通常の微積分の意味での\(t\)に関する導関数も同様に\(\dot{\theta}, \dot{\varphi}\)のように表すことがある．
-\(C^1\)級曲線\(\gamma \colon [t_0, t_1] \to M\)の長さを
-\begin{align*}
-    L(\gamma) = \int_{t_0}^{t_1} \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} d\tau
-\end{align*}
-と表す．
-
+\nocite{precup} % Chapter 7
+\nocite{suhubi} % Chapter 9
 \begin{thmbox}
-\begin{proposition}
-\(\gamma \colon [t_0, t_1] \to M\)を\(C^1\)級曲線とする．
-\(C^1\)級狭義単調増加関数を\(u \colon [s_0, s_1] \to [t_0, t_1]\)について，
-\(\tilde{\gamma} := \gamma \circ u\)とすると
+\begin{definition}
+\(X, Y\)を実Banach空間とし，\(U\)をその開集合とする．
+関数\(f \colon U \to Y\)が\(x \in U\)において\(h \in X\)方向に微分可能であるとは，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lvert s \rvert \leq \delta\)ならば
 \begin{align}
-    L(\tilde{\gamma}) = L(\gamma)
-    \mathlabel{great-circle-length-invariance}
+    \lVert f(x + s h) - f(x) - s g(x, h) \rVert_Y \leq \varepsilon \lvert s \rvert \mathlabel{directional-derivative}
 \end{align}
-が成り立つ．
-\end{proposition}
+となるような\(g(x, h)\)が存在することをいう．
+任意の\(h \in X\)について\(g(x, h)\)が存在するとき，
+\(f\)は\(x\)において\keyword{Gateaux微分可能}(Gateaux differentiable)であるという．
+このとき\(g(x, \placeholder) \colon X \to {\Real}\)を\(f'(x)\)と表し，\(f\)の\(x\)における\keyword{Gateaux導関数}(Gateaux derivative)という．
+\end{definition}
 \end{thmbox}
 
-\begin{proof}
-曲線上の任意の点\(\gamma(\tau)\)がその近傍の局所座標\(\psi \colon p \mapsto (x_1, \ldots, x_n)\)によって\((\psi \circ \gamma)(\tau) = (\gamma_1(\tau), \ldots, \gamma_n(\tau))\)と表されているとする．
-\(\tilde{\gamma} := \gamma \circ u, \tau = u(\sigma)\)とすると
-\begin{align*}
-    \frac{d\tilde{\gamma}}{ds}(\sigma)
-    &= d(\gamma \circ u)(\sigma) \\
-    &= d\gamma \left(du \left(\tpmbase{s}{\sigma}\right) \right) \\
-    &= d\gamma \left(\frac{du}{ds}(\sigma) \tpmbase{t}{u(\sigma)} \right) \\
-    &= \left(\frac{du}{dt}(\tau) \right)^{-1} d\gamma\left(\tpmbase{t}{\tau}\right) \\
-    &= \frac{1}{\dot{u}(\tau)} \dot{\gamma}(\tau)
-\end{align*}
-このとき
-\begin{align}
-    g_{\tilde{\gamma}(\sigma)}\left(\frac{d\tilde{\gamma}}{ds}(\sigma), \frac{d\tilde{\gamma}}{ds}(\sigma)\right)
-    = \frac{1}{(\dot{u}(\tau))^2}
-    g_{\gamma(\tau)}\left(\dot{\gamma}(\tau), \dot{\gamma}(\tau)\right).
-    \mathlabel{great-circle-unit-speed-metric}
-\end{align}
-したがって
-\begin{align*}
-    \int_{s_0}^{s_1} \sqrt{%
-        g_{\tilde{\gamma}(\sigma)}\left(\frac{d\tilde{\gamma}}{ds}(\sigma), \tilde{\gamma}(\sigma)\right)
-    } d\sigma
-    = \int_{t_0}^{t_1} \sqrt{%
-        g\left(\dot{\gamma}(\tau), \dot{\gamma}(\tau)\right)
-    } d\tau,
-\end{align*}
-すなわち\mathref{great-circle-length-invariance}が成り立つ．
-\end{proof}
+Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \lambda f' (x)(h)\)が成り立つ．
+これは\mathref{directional-derivative}が成り立つとき，\(\lvert s \lambda \rvert \leq \delta_0\)となるように\(s\)をとれば\(\lVert f(x + s \lambda h) - f(x) - s \lambda g(x, h) \rVert_Y \leq \varepsilon \lvert \lambda t \rvert\)
+となることからわかる．
 
-曲線\(\gamma \colon [t_0, t_1] \to M\)が正則である，すなわち任意の\(\tau \in [t_0, t_1]\)で\(\dot{\gamma}(\tau) \neq 0\)が成り立つとする．
-\(t_0\)から\(t\)までの\(\gamma\)の長さを表す関数\(\ell \colon [t_0, t_1] \to [0, L(\gamma)]\)は
-\begin{align*}
-    \ell(t) = \int_{t_0}^{t} \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} d \tau
-\end{align*}
-と表される．正則性の仮定より
-\begin{align*}
-    \frac{d\ell}{dt}(\tau) = \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} > 0
-\end{align*}
-であるから，\(\ell\)の逆関数\(u \colon [0, L(\gamma)] \to [t_0, t_1]\)が存在する．\mathref{great-circle-unit-speed-metric}から
-\begin{align}
-    g\left(\frac{d\tilde{\gamma}}{ds}(\sigma), \frac{d\tilde{\gamma}}{ds}(\sigma)\right) = 1
-    \mathlabel{great-circle-unit-speed}
-\end{align}
-が成り立つ．\(\sqrt{g_p(v, v)}\)をノルム\(\lVert v \rVert_p\)とみなすと，\mathref{great-circle-unit-speed}は速度（速度ベクトルの大きさ）が常に\(1\)であると解釈される．
-このような弧長を用いた再パラメーター付け(arc length reparametrization, unit speed reparametrization)について次が成り立つ．
+一方で，通常の微分と異なり，加法性\(f'(x)(u + v) = f'(x)(u) + f'(q)(v)\)は一般には成り立たない．
+例えば\(f \colon {\Real}^2 \mapsto {\Real}\)を
+\begin{numcases}
+    {f \colon (x_1, x_2) \mapsto}
+    0                               & if \(\coord{x_1, x_2} = \coord{0, 0}\), \nonumber \\
+    \frac{x_1 x_2^2}{x_1^2 + x_2^2} & otherwise \nonumber
+\end{numcases}
+と定義すると
+\begin{gather*}
+    f' (0, 0) (h_1, h_2) = \frac{h_1 h_2^2}{h_1^2 + h_2^2}
+\end{gather*}
+であり，\(u = \coord{1, 0}, v = \coord{0, 1}\)について
+\begin{gather*}
+    f' (0, 0) (u + v) =
+    \frac{(1 + 0) (0 + 1)^2}{(0 + 1)^2 + (1 + 0)^2} = \frac{1}{2}, \\
+    f' (0, 0) (u) + f' (0)(v) = \frac{1 \cdot 0^2}{1^2 + 0^2}
+    +
+    \frac{0 \cdot 1^2}{0^2 + 1^2} = 0
+\end{gather*}
+となることからわかる．
+
 
 \begin{thmbox}
-\begin{proposition}
-\(\gamma \colon [t_0, t_1] \to M\)を\(C^1\)級曲線とする．
-\(k\)を定数として\(g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) = k\)が成り立つならば
-\begin{align*}
-    E(\gamma) := \int_{t_0}^{t_1} \frac{1}{2} g_{\gamma(\tau)}(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) d\tau
-\end{align*}
-ついて\(L(\gamma) \propto \sqrt{E(\gamma)}\)が成り立つ．
-\(E\)を\(\gamma\)の\keyword{エネルギー}(energy)という．
-\end{proposition}
+\begin{definition}
+\(X, Y\)を実Banach空間とし，\(U\)をその開集合とする．
+関数\(f \colon U \to Y\)が\(x \in U\)において\keyword{Fréchet微分可能}(Fréchet differentiable)であるとは，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lVert h \rVert_X \leq \delta\)ならば
+\begin{align}
+    \lVert f(x + h) - f(x) - Df(x) h \rVert_Y \leq \varepsilon \lVert h \rVert_X \mathlabel{frechet-derivative}
+\end{align}
+となるような連続な線型写像\(Df(x) \colon U \to Y\)が存在することをいう．
+この\(Df(x)\)を\(f\)の\(x\)における\keyword{Fréchet導関数}(Fréchet derivative)という．
+\end{definition}
 \end{thmbox}
 
-\begin{proof}
-\(L^2\)空間におけるCauchy--Schwarzの不等式により
-\begin{gather}
-    \int_{t_0}^{t_1} 1^{\inlinefrac{1}{2}} \cdot (g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)))^{\inlinefrac{1}{2}} d\tau
-    \leq
-    \left(\int_{t_0}^{t_1} 1 d\tau\right)^{\inlinefrac{1}{2}}
-    \left(\int_{t_0}^{t_1} g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) d\tau\right)^{\inlinefrac{1}{2}} \notag \\
-    \int_{t_0}^{t_1} \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} d\tau
-    \leq
-    \sqrt{t_1 - t_0}
-    \sqrt{%
-        \int_{t_0}^{t_1} g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) d\tau.
-    }
-    \mathlabel{great-circle-cauchy-schwarz}
-\end{gather}
-\(g(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) = k\)より\mathref{great-circle-cauchy-schwarz}は等号で成立する．したがって\(L(\gamma) = \sqrt{t_1 - t_0}\sqrt{2 E(\gamma)} \propto E(\gamma)\)が成り立つ．
-\end{proof}
-
-\section{Banach空間における偏微分}
 % Postmodern Analysis p. 108
+\nocite{postmodern-analysis}
+\({\Real}^n\)から\({\Real}^m\)への写像と同様に，Banach空間からBanach空間への写像についても偏微分を定義することができる．
 \(\tuple{X_1, \lVert \placeholder \rVert_{X_1}}, \ldots, \tuple{X_n, \lVert \placeholder \rVert_{X_n}}\)をBanach空間とし，\(X\)をそれらの直積空間\(\tuple{X_1 \times \cdots \times X_n, \lVert \placeholder \rVert_{X_1} + \cdots + \lVert \placeholder \rVert_{X_n}}\)とする．
-\(f \colon X \to Y\)が\(x \in X\)において第\(j\)成分に関して(Fréchet)偏微分可能であるとは，ある有界線型作用素\(A(x) \colon X_j \to {\Real}\)が存在し，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(h_j \in X_j\)が\(\lVert h_j \rVert_{X_j} \leq \delta\)をみたすならば
+\(f \colon X \to Y\)が\(x \in X\)において第\(j\)成分に関して\keyword{偏Fréchet微分可能}(partially Fréchet differentiable)あるいは単に偏微分可能であるとは，ある有界線型作用素\(A(x) \colon X_j \to {\Real}\)が存在し，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(h_j \in X_j\)が\(\lVert h_j \rVert_{X_j} \leq \delta\)をみたすならば
 \begin{align}
     \lVert f(x_1, \ldots, x_j + h_j, \ldots, x_n) - f(x) - A(x) h_j \rVert_{Y} \leq \varepsilon \lVert h_j \rVert_{X_j}
     \mathlabel{partial-frechet-derivative}
 \end{align}
-ことをいう．このとき\(A(x)\)を\(f\)の第\(j\)成分に関する(Fréchet)偏導関数といい，\(D_jf(x)\)と表す．
-\(f\)が\(X\)において微分可能ならば，第\(j\)成分に関して偏微分可能である．
+ことをいう．このとき\(A(x)\)を\(f\)の第\(j\)成分に関する\keyword{偏Fréchet導関数}(partial Fréchet derivative)あるいは偏導関数といい，\(D_jf(x)\)と表す．
+\(f\)が\(X\)において(Fréchet)微分可能ならば，第\(j\)成分に関して偏微分可能である．
 このことは次のように確かめられる．
 写像\(\iota_j \colon V_j \to V_1 \times \cdots \times V_n\)を以下で定める．
 \begin{align*}
@@ -153,89 +124,299 @@
 このことと\(Df(x)\)の線型性から
 \begin{align*}
     Df(x)(h_1, \ldots, h_n)
-    &= Df(x) \left(\sum_{j = 1}^n (0, \ldots, h_j, \ldots, 0) \right) \\
-    &= \sum_{j = 1}^n (Df(x) \circ \iota_j)h_j \\
-    &= \sum_{j = 1}^n D_j(x) h_j
+    = Df(x) \left(\sum_{j = 1}^n (0, \ldots, h_j, \ldots, 0) \right)
+    = \sum_{j = 1}^n (Df(x) \circ \iota_j)h_j
+    = \sum_{j = 1}^n D_j(x) h_j
 \end{align*}
 が成り立つ．
 
-\section{変分法}
-次の問題
+\begin{thmbox}
+\begin{theorem}
+\(U\)を\(X\)の開集合とし，\(f \colon U \to Y\)とする．
+\(f\)が\(x \in U\)においてFréchet微分可能ならばGateaux微分可能である．
+また\(Df(x)h\)が意味をもつ任意の\(h\)について\(Df(x)h = f'(x)(h)\)が成り立つ．\theoremlabel{frechet-gateaux}
+\end{theorem}
+\end{thmbox}
 
-集合\(C^1([a, b], {\Real}^n)\)を
+\begin{proof}
+\(h = 0\)のときは成り立つ．
+任意の\(h \in X \setminus \{0\}\)をとる．
+\(f\)が\(x\)でFréchet微分可能なので，
+任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lVert \eta \rVert_X \leq \delta\)ならば
 \begin{align*}
-    C^1_0([a, b], {\Real}^n) = \{f \in C^1([a, b], {\Real}^n) \mid f(a) = f(b) = 0\}
+    \lVert f(x + \eta) - f(x) - Df(x) (\eta) \rVert_Y \leq \frac{\varepsilon}{\lVert h \rVert_X} \lVert \eta \rVert_X
 \end{align*}
-で定める．
-このとき\(C^1_0([a, b], {\Real}^n)\)は\(C^1([a, b], {\Real}^n)\)の部分空間である．
+が成り立つ．このとき\(\lvert s \rvert \leq \inlinefrac{\delta}{\lVert h \rVert_X}\)ならば
+\begin{align}
+    \lVert f(x + s h) - f(x) - s D(x)(h) \rVert_Y \leq \varepsilon \lvert s \rvert
+\end{align}
+となる．したがって\(\lVert h \rVert \leq \delta\)ならば\(f'(x)(h) = Df(x)h\)が成り立つ．
+\end{proof}
+
+\section{曲線の長さ}
+
+\(\tuple{M, g}\)をRiemann多様体とする．
+任意の点\(p \in M\)における方向微分\((\inlinefrac{\partial}{\partial x_i})\rvert_p\)を\(\partial_{x_i}\rvert_{p}\)や\(\partial_{x_i}\)のように略記する．
+また\(C^1\)級曲線\(\gamma \colon [a, b] \to M\)の時刻\(t = \tau\)における速度ベクトル\(\displaystyle d\gamma((\inlinefrac{\partial}{\partial t})\rvert_{\tau})\)を\(\dot{\gamma}(\tau)\)と略記する．
+通常の微積分の意味での\(t\)に関する導関数も同様に\(\dot{\theta}, \dot{\varphi}\)のように表すことがある．
+\(C^1\)級曲線\(\gamma \colon [a, b] \to M\)の長さを
 \begin{align*}
-    z(t) = \frac{(t - a)q_1 + (b - t)q_2}{b - a}
+    L(\gamma) = \int_{a}^{b} \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} d\tau
 \end{align*}
+と表す．
 
 \begin{thmbox}
 \begin{proposition}
-\(q \colon [a, b] \to {\Real}^n, f \colon [a, b] \times {\Real}^n \times {\Real}^n \to {\Real}\)をそれぞれ\(C^1\)級関数とする．
-汎関数\(J \colon C^1([a, b], {\Real}^n) \to {\Real}\)を
-\begin{align*}
-    J(q) = \int_a^b f(t, q(t), \dot{q}(t)) dt
-\end{align*}
-と定める．このとき\(E\)の\(q\)におけるFréchet導関数は
+\(\gamma \colon [a, b] \to M\)を\(C^1\)級曲線とする．
+\(C^1\)級狭義単調増加関数\(u \colon [k, \ell] \to [a, b]\)について，
+\(\tilde{\gamma} := \gamma \circ u\)とすると次が成り立つ．
 \begin{align}
-    DJ(q) \colon \eta \mapsto \int_a^b \left( D_2 f(t, q(t), \dot{q}(t)) \eta(t)  + D_3 f(t, q(t), \dot{q}(t)) \dot{\eta}(t) \right) dt \mathlabel{variational-method-frechet-derivative}
+    L(\tilde{\gamma}) = L(\gamma) \mathlabel{great-circle-length-invariance}
+\end{align}
+\end{proposition}
+\end{thmbox}
+
+\begin{proof}
+曲線上の任意の点\(\gamma(\tau)\)がその近傍の局所座標\(\psi \colon p \mapsto (x_1, \ldots, x_n)\)によって\((\psi \circ \gamma)(\tau) = (\gamma_1(\tau), \ldots, \gamma_n(\tau))\)と表されているとする．
+\(\tilde{\gamma} := \gamma \circ u, \tau = u(\sigma)\)とすると
+\begin{align*}
+    \frac{d\tilde{\gamma}}{ds}(\sigma)
+    &= d(\gamma \circ u)(\sigma) \\
+    &= d\gamma \left(du \left(\tpmbase{s}{\sigma}\right) \right) \\
+    &= d\gamma \left(\frac{du}{ds}(\sigma) \tpmbase{t}{u(\sigma)} \right) \\
+    &= \left(\frac{du}{dt}(\tau) \right)^{-1} d\gamma\left(\tpmbase{t}{\tau}\right) \\
+    &= \frac{1}{\dot{u}(\tau)} \dot{\gamma}(\tau)
+\end{align*}
+このとき
+\begin{align}
+    g_{\tilde{\gamma}(\sigma)}\left(\frac{d\tilde{\gamma}}{ds}(\sigma), \frac{d\tilde{\gamma}}{ds}(\sigma)\right)
+    = \frac{1}{(\dot{u}(\tau))^2}
+    g_{\gamma(\tau)}\left(\dot{\gamma}(\tau), \dot{\gamma}(\tau)\right).
+    \mathlabel{great-circle-unit-speed-metric}
+\end{align}
+したがって
+\begin{align*}
+    \int_{k}^{\ell} \sqrt{%
+        g_{\tilde{\gamma}(\sigma)}\left(\frac{d\tilde{\gamma}}{ds}(\sigma), \tilde{\gamma}(\sigma)\right)
+    } d\sigma
+    = \int_{a}^{b} \sqrt{%
+        g\left(\dot{\gamma}(\tau), \dot{\gamma}(\tau)\right)
+    } d\tau,
+\end{align*}
+すなわち\mathref{great-circle-length-invariance}が成り立つ．
+\end{proof}
+
+曲線\(\gamma \colon [a, b] \to M\)が正則である，すなわち任意の\(\tau \in [a, b]\)で\(\dot{\gamma}(\tau) \neq 0\)が成り立つとする．
+\(a\)から\(t\)までの\(\gamma\)の長さを表す関数\(\ell \colon [a, b] \to [0, L(\gamma)]\)は
+\begin{align*}
+    \ell(t) = \int_{a}^{t} \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} d \tau
+\end{align*}
+と表される．正則性の仮定より
+\begin{align*}
+    \frac{d\ell}{dt}(\tau) = \sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} > 0
+\end{align*}
+であるから，\(\ell\)の逆関数\(u \colon [0, L(\gamma)] \to [a, b]\)が存在する．\mathref{great-circle-unit-speed-metric}から
+\begin{align}
+    g\left(\frac{d\tilde{\gamma}}{ds}(\sigma), \frac{d\tilde{\gamma}}{ds}(\sigma)\right) = 1
+    \mathlabel{great-circle-unit-speed}
+\end{align}
+が成り立つ．\(\sqrt{g_p(v, v)}\)をノルム\(\lVert v \rVert_p\)とみなすと，\mathref{great-circle-unit-speed}は速度（速度ベクトルの大きさ）が常に\(1\)であると解釈される．
+このような弧長を用いた再パラメーター付け(arc length reparametrization, unit speed reparametrization)について次が成り立つ．
+
+\begin{thmbox}
+\begin{proposition}
+\(\gamma \colon [a, b] \to M\)を\(C^1\)級曲線とする．
+任意の\(t \in [a, b]\)で\(\sqrt{g(\dot{\gamma}(\tau), \dot{\gamma}(\tau))} = \mathrm{const.}\)が成り立つならば，
+長さ\(L(\gamma)\)は\keyword{エネルギー}(energy)
+\begin{align*}
+    E(\gamma) := \int_{a}^{b} \frac{1}{2} g_{\gamma(\tau)}(\dot{\gamma}(\tau), \dot{\gamma}(\tau)) d\tau
+\end{align*}
+に比例する．
+\end{proposition}
+\end{thmbox}
+
+\begin{proof}
+\(L^2\)空間におけるCauchy--Schwarzの不等式により
+\begin{gather}
+    \int_{a}^{b} \sqrt{1} \sqrt{g(\dot{\gamma}(t), \dot{\gamma}(t))} dt
+    \leq
+    \sqrt{\int_a^b 1 dt}
+    \sqrt{%
+        \int_{a}^{b} g(\dot{\gamma}(t), \dot{\gamma}(t)) dt.
+    }
+    \mathlabel{great-circle-cauchy-schwarz}
+\end{gather}
+\(\sqrt{g(\dot{\gamma}(t), \dot{\gamma}(t))} = \mathrm{const.}\)より\mathref{great-circle-cauchy-schwarz}は等号で成立する．したがって\(L(\gamma) = \sqrt{2 (b - a)}\sqrt{E(\gamma)} \)となる．
+\end{proof}
+
+
+\section{変分法}
+関数の空間\(X\)から\({\Real}\)への関数を\keyword{汎関数}(functional)という．
+汎関数を最大化あるいは最小化するような関数を求める問題を\keyword{変分問題}(variational problem)という．
+典型的なものとして，最も早く降りられる滑り台の形状を求める問題や，\(2\)点間の距離を最小とするような曲線を求める問題がある．
+この種の問題をここでは次のように定式化する．
+\(U\)を\({\Real}^n\)の開集合とし，\(f \colon U \times {\Real}^n \to {\Real}\)を連続関数とする．
+関数（曲線）の空間として\(X = C^1([a, b], {\Real}^n)\)をとる．
+この空間のノルムは
+\begin{align}
+    \lVert \gamma \rVert_{C^1([a, b], {\Real}^n)} =
+    \sup_{t \in [a, b]} \lVert \gamma(t) \rVert_{{\Real}^n} + \sup_{t \in [a, b]} \lVert \dot{\gamma}(t) \rVert_{{\Real}^n}
+    \mathlabel{c1-norm}
+\end{align}
+である．\(X_{\symup{P}, \symup{Q}} := \{\gamma \in X \mid \gamma(a) = \symup{P}, \gamma(b) = \symup{Q}\}\)と表すとき，次を最小化する\(\gamma \in X_{\symup{P}, \symup{Q}}\)を求めよ．
+\begin{align}
+    J(\gamma) = \int_a^b f(\gamma(t), \dot{\gamma}(t))dt. \problemlabel{variational-problem}
+\end{align}
+
+\(X_0 = \{\gamma \in X \mid \gamma(a) = \gamma(b) = 0\}\)とする．
+\(U\)が開集合なので，任意の\(q \in X_{\symup{P}, \symup{Q}}\)と\(\eta \in X_0\)について，
+ある\(r > 0\)が存在して，任意の\(t \in [a, b], s \in \openinterval{-r, r}\)で\(q(t) + s \eta(t) \in U\)とできる．
+\(q \in X_{\symup{P}, \symup{Q}}\)が\problemref{variational-problem}を最小化するならば，
+\begin{align*}
+    J(q + s \eta) \geq J(q), \quad J(q + s (- \eta)) \geq J(q),
+\end{align*}
+が成り立つ．このとき
+\begin{align*}
+    J' (q)(\eta) \geq 0, \quad - J'(q)(\eta) \geq 0
+\end{align*}
+が成り立ち，ゆえに\(J'(q) = 0\)となる．
+
+\begin{thmbox}
+\begin{proposition}
+\(U\)を\({\Real}^n\)の開集合とし，関数\(f \colon U \times {\Real}^n \to {\Real}\)を\(C^1\)級とする．
+汎関数\(J \colon X_{\symup{P}, \symup{Q}} \to {\Real}\)を
+\begin{align*}
+    J(\gamma) = \int_a^b f(\gamma(t), \dot{\gamma}(t)) dt
+\end{align*}
+と定める．
+このとき\(J\)の\(q\)におけるGateaux導関数は
+\begin{align}
+    J' (q) \colon \eta \mapsto \int_a^b \left( D_1 f(q(t), \dot{q}(t)) \eta(t)  + D_2 f(q(t), \dot{q}(t)) \dot{\eta}(t) \right) dt \mathlabel{variational-method-frechet-derivative}
 \end{align}
 で与えられる．
 \end{proposition}
 \end{thmbox}
 
 \begin{proof}
-\(f\)が微分可能であるから，第\(2\)成分と第\(3\)成分について偏微分することができる．すなわち任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lVert (h_1, h_2) \rVert_{{\Real}^n \times {\Real}^n} \leq \delta\)ならば
+\(U\)が開集合であるから，
+任意の\(q \in X_{\symup{P}, \symup{Q}}\)と\(\eta \in X_0 \setminus \{0\}\)について，
+ある\(r > 0\)が存在して，任意の\(t \in [a, b], s \in \openinterval{-r, r}\)で\(q(t) + s \eta(t) \in U\)とできる．
+
+\(f\)が微分可能であるから，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lvert s \rvert \leq \delta\)ならば
 \begin{align*}
-    & \lvert f(t, x_1 + h_1, x_2 + h_2) - f(t, x_1, x_2) - D_2 f(t, x_1, x_2) h_1 \\
-    & {} \mathbin{-} D_3 f (t, x_1, x_2) h_2  \rvert \leq \frac{\varepsilon}{b - a} ( \lVert h_1 \rVert_{{\Real}^n} + \lVert h_2 \rVert_{{\Real}^n} )
+    \lvert f(x_1 + s h_1, x_2 + s h_2) - f(x_1, x_2) - s D_1 f(x_1, x_2) h_1
+    - s D_2 f (x_1, x_2) h_2  \rvert \leq \frac{\varepsilon \lvert s \rvert}{b - a}
 \end{align*}
 が成り立つ．
-\(C^1\)級関数\(\eta \colon [a, b] \to {\Real}^n\)を\(\lVert \eta \rVert_{C^1([a, b], {\Real}^n)} \leq \delta\)となるようにとれば
+したがって\(\lvert s \rvert \in \min \{r, \delta\}\)ならば
 \begin{align*}
-    &\left\lvert J(q + \eta) - J(q) - \int_a^b  (D_2 f(t, q(t), \dot{q}(t)) \eta(t) + D_3 f (t, q(t), \dot{q}(t)) \dot{\eta}(t))  dt \right\rvert \\
-    &\leq \int_a^b \left\lvert f(t, q(t) + \eta(t), \dot{q}(t) + \dot{\eta}(t)) - f(t, q(t), \dot{q}(t)) \right. \\
-    & \mathrel{\hphantom{=}}{} \left. {} \mathbin{-} D_2 f(t, q(t), \dot{q}(t)) \eta(t) - D_3 f (t, q(t), \dot{q}(t)) \dot{\eta}(t)) \right\rvert dt \\
-    &\leq \int_a^b \varepsilon (\lVert \eta(t) \rVert_{{\Real}^n} + \lVert \dot{\eta}(t) \rVert_{{\Real}^n}) dt \\
-    &\leq \varepsilon \lVert \eta(t) \rVert_{C^1([a, b], {\Real}^n)}.
+    &\left\lvert J(q + s \eta) - J(q) - s \int_a^b  (D_1 f(q(t), \dot{q}(t)) \eta(t) + D_2 f (q(t), \dot{q}(t)) \dot{\eta}(t))  dt \right\rvert \\
+    &\leq \int_a^b \left\lvert f(q(t) + s \eta(t), \dot{q}(t) + s \dot{\eta}(t)) - f(q(t), \dot{q}(t))
+    - s D_1 f(q(t), \dot{q}(t)) \eta(t) - s D_2 f (q(t), \dot{q}(t)) \dot{\eta}(t)) \right\rvert dt \\
+    &\leq \int_a^b \frac{\varepsilon \lvert s \rvert}{b - a} = \varepsilon \lvert s \rvert.
 \end{align*}
 よって\mathref{variational-method-frechet-derivative}が成り立つ．
 \end{proof}
 
 \begin{thmbox}
-\begin{theorem}[（変分法の基本補題）]
-\(f \colon [a, b] \to {\Real}\)を連続関数とする．
-任意の\(\eta \in C^1_0([a, b], {\Real})\)について
+\begin{lemma}
+\(f \in C([a, b], {\Real}^n), f \colon t\mapsto \inlinecolvec{f_1(t)}{\cdots}{f_n(t)}\)とする．
+任意の連続関数\(\eta \in X_0\)について
 \begin{align}
-    \int_a^b f(t) \dot{\eta}(t) dt = 0
+    \int_a^b f(t) \cdot \eta(t) dt = 0
     \label{fundamental-lemma-assumption}
 \end{align}
-が成り立つならば，\(C\)を定数として，すべての\(t \in [a, b]\)で\(f(t) = C\)が成り立つ．
+が成り立つならば任意の\(t \in [a, b]\)で\(f(t) = 0\)が成り立つ．\lemmalabel{fundamental-lemma1}
+\end{lemma}
+\end{thmbox}
+
+\begin{proof}
+背理法によって示す．
+ある\(j \in \{1, \ldots, n\}\)と\(t_0 \in [a, b]\)で\(f_j(t_0) > 0\)と仮定する．
+\(f_j\)が連続であるから，ある\(\varepsilon > 0\)が存在して\(t \in [t_0 - \varepsilon, t_0 + \varepsilon]\)ならば\(f_j(t) > 0\)となる．
+\(\eta \colon t \mapsto \inlinecolvec{\eta_1(t)}{\cdots}{\eta_n(t)}\)を
+\begin{numcases}
+    {\eta_i(t) =}
+    \exp \left(\frac{1}{(t - (t_0 - \varepsilon))(t - (t_0 + \varepsilon))} \right) \symbb{1}_{[t_0 -\varepsilon, t_0 + \varepsilon]}(t) & if \(i = j\), \nonumber \\
+    0 & otherwise \nonumber
+\end{numcases}
+と定義する（\figref{bump-function}）．
+このとき
+\begin{align*}
+    \int_a^b f(t) \cdot \eta(t) dt = \int_{t_0 - \varepsilon}^{t_0 + \varepsilon} f_j(t) \eta_j(t) > 0
+\end{align*}
+となり，仮定に矛盾する．
+\end{proof}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+        defaultplot,
+        xlabel={\(t\)},
+        ylabel={\(y\)},
+        ymax=2.5,
+        xtick={1, 2.25, 3.5},
+        xticklabels={\(t_0 - \varepsilon\), \(t_0\), \(t_0 + \varepsilon\)}
+    ]
+    \node (O) at (axis cs: -0.3, -0.3) {\(\origin\)};
+    \addplot[dotted] coordinates {(2.25, 0) (2.25, 1.05)};
+    \addplot[sOriginalCurve, thick][domain=1.01:3.49] {2 * exp(((x - 1) * (x - 3.5))^(-1))};
+    \addplot[sOriginalCurve, thick] coordinates {(3.489, 0) (4.6, 0)};
+    \addplot[sOriginalCurve, thick] coordinates {(-0.15, 0) (1.02, 0)};
+\end{axis}
+\end{tikzpicture}
+\caption{\(y = \eta_j(t)\)のグラフ．これはbump functionと呼ばれるものの一種である．}
+\figlabel{bump-function}
+\end{figure}
+
+\begin{thmbox}
+\begin{theorem}
+\(f \in C^1([a, b], {\Real}^{n})\)とする．
+任意の\(\eta \in X_0\)について
+\begin{align}
+    \int_a^b f (t) \cdot \dot{\eta}(t) dt = 0
+    \label{fundamental-lemma2-assumption}
+\end{align}
+が成り立つならば\(f\)は定数関数である．\theoremlabel{fundamental-lemma2}
 \end{theorem}
 \end{thmbox}
 
 \begin{proof}
-定数\(C\)と写像\(g\)をそれぞれ
-\begin{gather*}
-    C = \frac{1}{b - a} \int_a^b f(t) dt, \quad g \colon t \mapsto \int_a^t (f(\tau) - C) d\tau
-\end{gather*}
-で定義する．
-このとき\(g\)は\(C^1\)級関数であり，\(g(a) = g(b) = 0, \dot{g}(t) = f(t) - C\)が成り立つ．
-したがって仮定\ref{fundamental-lemma-assumption}と併せて
+部分積分によって
 \begin{align*}
-    \int_a^b (f(t) - C)^2 dt
-    &= \int_a^b (f(t) - C) \dot{g}(t) dt \\
-    &= \int_a^b f(t)\dot{g}(t) dt - C \int_a^b \dot{g}(t)dt \\
-    &= 0 - [g(t)]_{t = a}^{t = b} \\
-    &= 0.
+    \int_a^b f(t) \cdot \dot{\eta}(t) dt =
+    [f(t) \cdot \eta(t)]_{t = a}^{t = b} - \int_a^b \dot{f}(t) \cdot \eta(t) dt
 \end{align*}
-したがってほとんどすべての\(t \in [a, b]\)で\(f = C\)が成り立つ．
-% Cohn Measure Theory 2.2 Properties That Hold Almost Everywhere Exercises 3
-しかし\(f\)が連続であったから実際はすべての\(t \in [a, b]\)で\(f = C\)である．
+である．
+\(\eta \in X_0\)より\(\eta(a) = \eta(b) = 0\)であるから，右辺第\(1\)項は\(0\)である．
+仮定~\ref{fundamental-lemma2-assumption}と\lemmaref{fundamental-lemma1}から任意の\(t \in [a, b]\)で\(\dot{f}(t) = 0\)となる．したがって\(f\)は定数関数である．
 \end{proof}
+
+\mathref{variational-method-frechet-derivative}の\(J'(q)\)は部分積分と\(\eta(a) = \eta(b) = 0\)によって次をみたすことがわかる．
+\begin{align*}
+    & J'(q)(\eta) \\
+    & = \int_a^b D_1 f(q(t), \dot{q}(t)) \eta(t) dt + \int_a^ b D_2 f(q(t), \dot{q}(t))\dot{\eta}(t) dt \\
+    & = \left[\left(\int_a^t D_1 f(q(\tau), \dot{q}(\tau)) d\tau\right) \eta(t)\right]_{t = a}^{t = b}
+    - \int_a^b \left(\int_a^t D_1 f(q(\tau), \dot{q}(\tau)) d\tau \right) \dot{\eta}(\tau) dt \\
+    & \mathbin{\hphantom{=}}{} + \int_a^b D_2f(q(t), \dot{q}(t)) \dot{\eta}(t) dt \\
+    & = \int_a^b
+    \left(
+        \left(
+        - \int_a^t D_1 f(q(\tau), \dot{q}(\tau)) d\tau
+        +  D_2 f(q(t), \dot{q}(t))
+        \right)
+        \dot{\eta}(t)
+    \right) dt
+\end{align*}
+\theoremref{fundamental-lemma2}より\(k_1, \ldots, k_n\)を定数として
+\begin{align*}
+    - \int_a^t D_1 f(q(\tau), \dot{q}(\tau)) d\tau
+    + D_2 f(q(t), \dot{q}(t)) = \begin{pmatrix} k_1 & \cdots & k_n \end{pmatrix}
+    \mathlabel{euler-lagrange-integral}
+\end{align*}
+が成り立つ．
+\mathref{euler-lagrange-integral}をEuler--Lagrange方程式の積分形という．
 
 \section{地球のモデル}
 
@@ -243,7 +424,7 @@
 地中を掘って進むことは困難なので，それは不可能であるとする．
 単純化のため地表の構造物や地球が回転楕円体であることは無視し，地球を球面\(S^2 = \{\tuple{x_1, x_2, x_3} \mid x_1^2 + x_2^2 + x_3^2 = 1\}\)でモデル化する．
 
-計算をしやすくするため\(S^2\)の各点を球面座標系\(\tuple{\xi_0, \xi_1, \xi_2}\)で表す．
+計算をしやすくするため\(S^2\)の各点を球面座標系\(\xi = \tuple{\xi_0, \xi_1, \xi_2}\)で表す．
 動径\(\xi_0\)は\(1\)に固定されるため，\(\xi_0\)を省略して\(\tuple{\xi_1, \xi_2}\)のように書く．
 天頂角あるいは余緯度\(\xi_1\) \((0 < \xi_1 < \pi)\)は緯度に応じて
 \begin{numcases}
@@ -268,7 +449,8 @@
 \begin{align*}
     \Phi_0 = \left\{\tuple{x_1, x_2, x_3} \relmiddle{|} \text{\(\sqrt{x_1^2 + x_3^2} = 1\), \(x_1 > 0\), and \(x_2 = 0\)} \right\}
 \end{align*}
-と表すことができる．\(S^2 \setminus \Phi_0\)の局所座標系として球面座標系\(\xi = \tuple{\xi_1, \xi_2}\)をとる．
+と表すことができる．
+\(S^2 \setminus \Phi_0\)の局所座標系として球面座標系\(\xi = \tuple{\xi_1, \xi_2}\)をとる．
 \begin{gather*}
     \xi \colon
     \tuple{x_1, x_2, x_3}
@@ -412,108 +594,74 @@
         0 & \sin^2 p_1
     \end{pmatrix}
 \end{align*}
-となる．よって任意の\(v = v_1 \partial_{\xi_1} + v_2 \partial_{\xi_2} \in T_p S^2\)について
+となる．
+よって\(p\)における速度ベクトル
+\begin{align*}
+    v = v_1 \tpmbase{\xi_1}{p} + v_2 \tpmbase{\xi_2}{p}
+\end{align*}
+について
 \begin{align}
     g_p(v, v)
     &= v_1^2 g_p(\partial_{\xi_1}, \partial_{\xi_1}) + 2 v_1 v_2 g_p(\partial_{\xi_1}, \partial_{\xi_2}) + v_2^2 g_p(\partial_{\xi_2}, \partial_{\xi_2}) \notag \\
     &= \begin{pmatrix} v_1 & v_2 \end{pmatrix} G_p \begin{pmatrix} v_1 \\ v_2 \end{pmatrix} \notag \\
-    &= v_1^2 + v_2^2 \sin^2 p_1 \mathlabel{great-circle-riemannian-metric}
+    &= v_1^2 + v_2^2 \sin^2 p_1 \mathlabel{great-circle-inner-product}
 \end{align}
 となる．
 
 \section{地球上の2地点間の距離}
 記号は前節と同じものを使う．
-\(S^2 \setminus \Phi_0\)の異なる\(2\)点\(\symup{P} = \coord{\theta_{\symup{P}}, \varphi_{\symup{P}}}, \symup{Q} = \coord{\theta_{\symup{Q}}, \varphi_{\symup{Q}}}\)をとり，
-\(\symup{P}\)から\(\symup{Q}\)への正則曲線\(\gamma \colon [0, T] \to S^2 \setminus \Phi_0\)をとる．
-\(\gamma\)上の任意の点を\(q(t) = (\xi \circ \gamma)(t) = \coord{\theta(t), \varphi(t)}\)とする．
-ここで\(\theta \colon [0, T] \to (0, \pi)\)と\(\varphi \colon [0, T] \to (0, 2 \pi)\)である．
-曲線\(\gamma\)が正則であると仮定したため，暗に\(\theta, \varphi\)が\(C^1\)級であると仮定されていることに注意する．
-またこれらは予め弧長によって再パラメーター付けされているものとする．
-時刻\(t\)における\(\theta, \varphi\)の速度ベクトルを並べたものを\(v(t) = \coord{\dot{\theta}(t), \dot{\varphi}(t)}\)と表す．
-
-\mathref{great-circle-riemannian-metric}を参考にして，関数\(f \colon {\Real}^2 \times {\Real}^2 \to {\Real}\)を
+\(S^2 \setminus \Phi_0\)の異なる\(2\)点\(\symup{P},\symup{Q}\)をとり，
+\(\symup{P}\)から\(\symup{Q}\)への正則な曲線を\(\gamma \colon [0, T] \to \openinterval{0, \pi} \times \openinterval{0, 2\pi}\)とし，\(q = \xi \circ \gamma\)とする．このとき\(q(t) = \coord{\theta(t), \varphi(t)}\)と表すことができる．
+ここで\(\theta \colon [0, T] \to [0, \pi)\)と\(\varphi \colon [0, T] \to [0, 2 \pi)\)である．
+曲線\(\gamma\)が正則であると仮定したため，暗に\(\theta, \varphi\)は\(C^1\)級であると仮定されていることに注意する．\(q\)の速度ベクトルは
+\begin{align*}
+    \dot{q}(t) = \dot{\theta}(t) \tpmbase{\xi_1}{q} + \dot{\varphi}(t) \tpmbase{\xi_2}{q}
+\end{align*}
+これは既に弧長による再パラメーター付けがされているものとする．
+\mathref{great-circle-inner-product}より
+関数\(f \colon \xi(S^2 \setminus \Phi_0) \times {\Real}^2 \to {\Real}\)を
 \begin{gather*}
     f\colon (y, u) \mapsto \frac{u_1^2 + u_2^2 \sin^2 y_1}{2}
-    =
-    \begin{pmatrix}
-        u_1 & u_2
-    \end{pmatrix}
-    \begin{pmatrix}
-        1 & 0 \\
-        0 & \sin^2 y
-    \end{pmatrix}
-    \begin{pmatrix}
-        u_1 \\ u_2
-    \end{pmatrix}
 \end{gather*}
-と定義すると，\({\Real}^3\)における\(\gamma\)のエネルギーを
+と定義すると，\(\gamma\)のエネルギーは
 \begin{align}
-    E(\gamma) = \int_0^T f(q(t), v(t)) dt
+    E(q) = \int_0^T f(q(t), \dot{q}(t)) dt
+    = \int_0^T \frac{(\dot{\theta}(t))^2 + (\dot{\varphi}(t))^2 \sin^2 \theta(t)}{2} dt
     \mathlabel{great-circle-energy}
 \end{align}
-と表すことができる．\(f\)の\(y, u\)に関する偏導関数はそれぞれ
+と表すことができる．\(f\)の\(\coord{q(t), \dot{q}(t)}\)における偏導関数は
 \begin{gather*}
-    D_y f(y, u)
+    D_1 f(q(t), v(t))
     =
     \begin{pmatrix}
-        u_2^2 \sin y_1 \cos y_1 & 0
+        (\dot{\varphi}(t))^2 \sin \theta(t) \cos \theta(t)
+        &
+        0
     \end{pmatrix},
     \\
-    D_u f(y, u)
+    D_2 f(q(t), v(t))
     =
     \begin{pmatrix}
-        u_1 & u_2
-    \end{pmatrix}
-    \begin{pmatrix}
-        1 & 0 \\
-        0 & \sin^2 y_1
+        \dot{\theta}(t)
+        &
+        \dot{\varphi}(t) \sin^2 \theta(t)
     \end{pmatrix}
 \end{gather*}
-である．
-\(C^1([0, T])\)の関数\(h\)で\(h(0) = h(T) = 0\)をみたすものを任意にとる．
-\(E\)の\(\gamma\)におけるFréchet導関数は
-\begin{align*}
-    & DE(\gamma)h \\
-    & = \int_0^T \left(D_u f(q(t), \dot{q}(t)) h(t) + D_v f(q(t), \dot{q}(t))\dot{h}(t)\right) dt \\
-    & = \int_0^T \left([f(q(t), \dot{q}(t))h(t)]_{t = 0}^{t = T} - \int_0 D_u f(q(t), \dot{q}(t)) \dot{h}(t) d\tau + D_v f(q(t), \dot{q}(t))\dot{h}(t)\right) dt \\
-    & = \int_0^T
-    \left(
-        \left(
-        - \int_0 D_u f(q(t), \dot{q}(t)) d\tau
-        +  D_v f(q(t), \dot{q}(t))
-        \right)
-        \dot{h}(t)
-    \right) dt
-\end{align*}
-と求められる．変分法の基本補題によって
-\begin{gather*}
-    D_v f(q(t), \dot{q}(t)) - \int_0 D_u f(q(t), \dot{q}(t)) d\tau = \begin{pmatrix} C_1 & C_2 \end{pmatrix} \\
-    \begin{pmatrix}
-        \dot{\theta}(t) & \dot{\varphi}(t)
-    \end{pmatrix}
-    \begin{pmatrix}
-        1 & 0 \\
-        0 & \sin^2 \theta(t)
-    \end{pmatrix}
-    =
-    \begin{pmatrix}\displaystyle \int_0^t \dot{\varphi}(\tau)\sin \theta(\tau) \cos \theta(\tau) d\tau + C_1 & C_2 \end{pmatrix}
-\end{gather*}
-成分ごとに比較して
+である．したがってこの問題のEuler--Lagrange方程式の積分形は
 \begin{numcases}
     {}
-    \dot{\theta}(t) = \int_0^t (\dot{\varphi}(\tau))^2 \sin \theta(\tau) \cos \theta(\tau) d\tau + C_1 \\
-    \dot{\varphi}(t) \sin^2 \theta(t) = C_2
+    \dot{\theta}(t) = \int_0^t (\dot{\varphi}(\tau))^2 \sin \theta(\tau) \cos \theta(\tau) d\tau + k_1 \\
+    \dot{\varphi}(t) \sin^2 \theta(t) = k_2
 \end{numcases}
-を得る．
+となる．
 右辺の形から\(\dot{\theta}, \dot{\varphi}\)もまた\(C^1\)級である．
-したがって両辺を\(t\)で微分して次のEuler--Lagrange方程式を得る．
+したがって両辺を\(t\)で微分して次の連立方程式を得る．
 \begin{numcases}
     {}
-    \ddot{\theta} = \dot{\varphi}^2 \sin \theta \cos \theta \mathlabel{great-circle-euler-lagrange1} \\
-    \ddot{\varphi} = - 2 \frac{\dot{\theta}}{\tan \theta}\dot{\varphi} \mathlabel{great-circle-euler-lagrange2}
+    \ddot{\theta}(t) = \dot{\varphi}^2(t) \sin \theta(t) \cos \theta(t) \mathlabel{great-circle-euler-lagrange1} \\
+    \ddot{\varphi}(t) = - 2 \frac{\dot{\theta}(t)}{\tan \theta(t)}\dot{\varphi}(t) \mathlabel{great-circle-euler-lagrange2}
 \end{numcases}
-ただし引数\(t\)は省略した．
-エネルギー（\mathref{great-circle-energy}）は\(t\)を陽に含んでいないため，\(\theta\)と\(\varphi\)の関係のみで定まる．
+エネルギー（\mathref{great-circle-energy}）は\(\theta\)と\(\varphi\)の関係のみで定まる．
 したがって\(\theta\)を\(\varphi\)の関数とみなす．
 このとき\mathref{great-circle-euler-lagrange1}の左辺は
 \begin{align}
@@ -578,39 +726,34 @@
     (D^2  + 1) y = 0 \label{great-circle-ode-operator}
 \end{align}
 に帰着される．
-代数方程式\(\lambda^2 + 1 = 0\)の根が\(\lambda = \pm i\)であるから\ref{great-circle-ode-operator}の解空間は\(\Span \{\realpart e^{i\varphi}, \imaginarypart e^{i\varphi}, \realpart e^{-i\varphi}, \imaginarypart e^{-i\varphi}\} = \Span \{\cos \varphi, \sin \varphi\}\)に等しい．
+代数方程式\(\lambda^2 + 1 = 0\)の根が\(\lambda = \pm i\)であるから微分方程式\ref{great-circle-ode-operator}の解空間は
+\begin{align*}
+\Span \{\realpart e^{i\varphi}, \imaginarypart e^{i\varphi}, \realpart e^{-i\varphi}, \imaginarypart e^{-i\varphi}\} = \Span \{\cos \varphi, \sin \varphi\}
+\end{align*}
+に等しい．
 したがって\(A, B\)を定数として
 \begin{align*}
     y(\varphi) = \frac{1}{\tan \theta(\varphi)} = A \cos \varphi + B \sin \varphi
 \end{align*}
 と表すことができる．
 この両辺に\(\sin \theta\)をかけると
-\begin{gather}
-    \cos \theta  = A \sin \theta \cos \varphi + B \sin \theta \sin \varphi. \notag \\
-    \begin{pmatrix}
-        A \\
-        B \\
-        - 1 \\
-    \end{pmatrix}
-    \cdot
-    \begin{pmatrix}
-        \sin \theta \cos \varphi \\
-        \sin \theta \sin \varphi  \\
-        \cos \theta
-    \end{pmatrix}
-    = 0,
-\end{gather}
+\begin{align*}
+    \cos \theta  = A \sin \theta \cos \varphi + B \sin \theta \sin \varphi.
+\end{align*}
 となる．
-これは定ベクトル\(n := (A\ \ B\ \ -1)^{\transpose}\)と曲線\(\iota \circ \gamma\)上の点が常に直交していること，すなわち\(\gamma\)の像が大円の一部であることを表す．
-
-
-\(A, B\)を具体的に求めると
+これは定ベクトル
+\begin{align*}
+    n_\bot = \begin{pmatrix} A \\ B \\ -1 \end{pmatrix}
+\end{align*}
+と曲線\(\iota \circ \gamma\)上の点が常に直交していること，すなわち\(\gamma\)の像が大円の一部であることを表す．
+これで目的は達せられたが，せっかくなので\(A, B\)を具体的に求めておこう．
+\(\symup{P} = \iota(\theta(0), \varphi(0)) = \coord{\symup{P}_1, \symup{P}_2, \symup{P}_3}, \symup{Q} = \iota(\theta(T), \varphi(T)) = \coord{\symup{Q}_1, \symup{Q}_2, \symup{Q}_3}\)とすると
 \begin{numcases}
     {}
-    \frac{1}{\tan \theta_{\symup{P}}} = A \cos \varphi_{\symup{P}} + B \sin \varphi_{\symup{P}} \nonumber \\
-    \frac{1}{\tan \theta_{\symup{Q}}} = A \cos \varphi_{\symup{Q}} + B \sin \varphi_{\symup{Q}} \nonumber
+    \frac{1}{\tan \theta(0)} = A \cos \varphi(0) + B \sin \varphi(0) \nonumber \\
+    \frac{1}{\tan \theta(T)} = A \cos \varphi(T) + B \sin \varphi(T) \nonumber.
 \end{numcases}
-を解いて
+これを解くと
 \begin{align*}
     \begin{pmatrix}
         A \\
@@ -618,29 +761,124 @@
     \end{pmatrix}
     &=
     \begin{pmatrix}
-        \cos \varphi_{\symup{P}} & \sin \varphi_{\symup{P}} \\
-        \cos \varphi_{\symup{Q}} & \sin \varphi_{\symup{Q}}
+        \cos \varphi(0) & \sin \varphi(0) \\
+        \cos \varphi(T) & \sin \varphi(T)
     \end{pmatrix}^{-1}
     \begin{pmatrix}
-        \inlinefrac{1}{\tan \theta_{\symup{P}}} \\
-        \inlinefrac{1}{\tan \theta_{\symup{Q}}}
+        \inlinefrac{1}{\tan \theta(0)} \\
+        \inlinefrac{1}{\tan \theta(T)}
     \end{pmatrix} \\
     &=
-    \frac{1}{\sin \theta_{\symup{P}} \sin \theta_{\symup{Q}}\sin (\varphi_{\symup{Q}} - \varphi_{\symup{P}})}
+    \frac{1}{\sin \theta(0) \sin \theta(T)\sin (\varphi(T) - \varphi(0))}
     \begin{pmatrix}
-        \sin \varphi_{\symup{Q}} & - \sin \varphi_{\symup{P}} \\
-        - \cos \varphi_{\symup{Q}} & \cos \varphi_{\symup{P}}
+        \sin \varphi(T) & - \sin \varphi(0) \\
+        - \cos \varphi(T) & \cos \varphi(0)
     \end{pmatrix}
     \begin{pmatrix}
-        \cos \theta_{\symup{P}} \sin \theta_{\symup{Q}} \\
-        \cos \theta_{\symup{Q}} \sin \theta_{\symup{P}}
+        \cos \theta(0) \sin \theta(T) \\
+        \cos \theta(T) \sin \theta(0)
     \end{pmatrix}
     \\
     &=
-    \frac{1}{\sin \theta_{\symup{P}} \sin \theta_{\symup{Q}}\sin (\varphi_{\symup{Q}} - \varphi_{\symup{P}})}
+    \frac{1}{\symup{P}_x\symup{Q}_y - \symup{P}_y \symup{Q}_x}
     \begin{pmatrix}
-        \symup{Q}_y \symup{P}_z - \symup{P}_y \symup{Q}_z  \\
-        - \symup{Q}_x \symup{P}_z + \symup{P}_x \symup{Q}_z
-    \end{pmatrix}
+        \symup{P}_z \symup{Q}_y - \symup{P}_y \symup{Q}_z \\
+        \symup{P}_x \symup{Q}_z - \symup{P}_z \symup{Q}_x
+    \end{pmatrix}.
 \end{align*}
+したがって
+\begin{align*}
+    n_\bot \mathbin{\|}
+        \begin{pmatrix}
+            \symup{P}_y \symup{Q}_z - \symup{P}_z \symup{Q}_y \\
+            \symup{P}_z \symup{Q}_x - \symup{P}_x \symup{Q}_z \\
+            \symup{P}_x\symup{Q}_y - \symup{P}_y \symup{Q}_x
+        \end{pmatrix}
+        = \overrightarrow{\symup{O}\symup{P}} \times \overrightarrow{\symup{O}\symup{Q}}.
+\end{align*}
+半径\(R\)の球面\(S^2(R)\)の\(2\)点\(\symup{P}, \symup{Q}\)の距離は，
+\(\overrightarrow{\symup{O}\symup{P}}, \overrightarrow{\symup{O}\symup{Q}}\)
+のなす角に等しい．
+\begin{align*}
+    R \arccos \left(%
+        \frac{%
+            \overrightarrow{\symup{O}\symup{P}}
+        }{%
+            \left\lVert \overrightarrow{\symup{O}\symup{P}} \right\rVert
+        } \cdot
+        \frac{%
+            \overrightarrow{\symup{O}\symup{Q}}
+        }{%
+            \left\lVert \overrightarrow{\symup{O}\symup{Q}} \right\rVert
+        }
+    \right)
+\end{align*}
+
+\begin{figure}
+\centering
+\tdplotsetmaincoords{60}{130}
+\begin{tikzpicture}[%
+    scale=3.4,
+    tdplot_main_coords
+]
+    \pgfmathsetmacro{\r}{1.0}
+
+    \pgfmathsetmacro\panglephi{25}
+    \pgfmathsetmacro\pangletheta{50}
+
+    \pgfmathsetmacro\qanglephi{80}
+    \pgfmathsetmacro\qangletheta{40}
+
+    \coordinate (O) at (0, 0, 0);
+    \node[left=2] at (0, 0, 0) {\(\origin\)};
+    \node[above=5, right=2] at (0, 0, 1) {\(\symup{N}\)};
+    \tdplotsetcoord{P}{\r}{\pangletheta}{\panglephi}
+    \tdplotsetcoord{Q}{\r}{\qangletheta}{\qanglephi}
+
+    % PROJECTIONS
+    \draw[sLightGray, thin] plot[domain=0:90](
+        {\r * sin(\x) * cos(\qanglephi)},
+        {\r * sin(\x) * sin(\qanglephi)},
+        {\r * cos(\x)}
+    ) coordinate (projV);
+    \draw[sLightGray, thin] plot[domain=0:90]({\r * cos(\x)}, {\r * sin(\x)}, 0);
+    \draw[sLightGray, thin] (O)  -- ({\r * cos(\panglephi)}, {\r * sin(\panglephi)}, 0);
+    \draw[sLightGray, thin] (O)  -- ({\r * cos(\qanglephi)}, {\r * sin(\qanglephi)}, 0);
+    \tdplotdrawarc[sRed, -stealth]{(O)}{0.45 * \r}{0}{\qanglephi} {below=-1}{\(\varphi_2\)}
+    \draw[sLightGray, thin] plot[domain=0:90](
+        {\r * sin(\x) * cos(\panglephi)},
+        {\r * sin(\x) * sin(\panglephi)},
+        {\r * cos(\x)}
+    ) coordinate (projP);
+
+    \tdplotsetthetaplanecoords{\panglephi}
+    \tdplotdrawarc[sBlue, -stealth, tdplot_rotated_coords]{(0, 0, 0)}{0.18 * \r}{0}{\pangletheta}{left=4, above=-1}{\(\theta_1\)}
+    \tdplotsetthetaplanecoords{\qanglephi}
+    \tdplotdrawarc[sRed, -stealth, tdplot_rotated_coords]{(0, 0, 0)}{0.22 * \r}{0}{\qangletheta}{right=3, above=-1}{\(\theta_2\)}
+
+    \tdplotdrawarc[sBlue, -stealth]{(O)}{0.2 * \r}{0}{\panglephi} {below=-1}{\(\varphi_1\)}
+
+    \draw[thick,-stealth] (0, 0, 0) -- (1.2 * \r, 0, 0) node[left=1, above=2]{};
+    \draw[thick,-stealth] (0, 0, 0) -- (0, 1.2 * \r, 0) node[above=2]{};
+    \draw[thick,-stealth] (0, 0, 0) -- (0,0, 1.2 * \r) node[below=3, left=1]{};
+
+    \tdplotdefinepoints(0, 0, 0)%
+        ({\r * sin(\pangletheta) * cos(\panglephi)}, {\r * sin(\pangletheta) * sin(\panglephi)}, {\r * cos(\pangletheta)})%
+        ({\r * sin(\qangletheta) * cos(\qanglephi)}, {\r * sin(\qangletheta) * sin(\qanglephi)}, {\r * cos(\qangletheta)})
+    \tdplotdrawpolytopearc[sGreen]{1}{anchor=west}{}
+
+    \draw[sBlue, -stealth] (O)  -- (P) node[above=4, left=2] {\(\symup{P}\)};
+    \draw[sRed, -stealth] (O)  -- (Q) node [below=10, left=-3] {\(\symup{Q}\)};
+
+    \node[sGreen, right=40, above=-5] at ({\r * sin(30) * cos(50)}, {\r * sin(30) * sin(50)}, {\r * cos(30)}) {\(\displaystyle R \arccos \left(\frac{\overrightarrow{\symup{O}\symup{P}}}{\left\lVert \overrightarrow{\symup{O}\symup{P}} \right\rVert} \cdot \frac{\overrightarrow{\symup{O}\symup{Q}}}{\left\lVert \overrightarrow{\symup{O}\symup{Q}} \right\rVert}\right)\)};
+
+\end{tikzpicture}
+\end{figure}
+
+\nocite{yajima}
+\nocite{yamamoto}
+
+\bibliographystyle{jecon}
+\bibliography{references}
+
 \end{document}
