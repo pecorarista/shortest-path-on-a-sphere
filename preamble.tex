@@ -1,4 +1,8 @@
 \usepackage{graphicx}
+\usepackage[%
+    hang,
+    flushmargin
+]{footmisc}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -288,6 +292,8 @@
 \newcommand\inlinecolvec[3]{(#1\ \ #2\ \ #3)^{\transpose}}
 \newcommand\origin{\symup{O}}
 \newcommand\almosteverywhere{\mathrm{a.e.}}
+\newcommand\gateauxderiv[2]{df(#1;\, #2)}
+\newcommand\geovec[2]{\overrightarrow{\symup{#1}\symup{#2}}}
 
 \newcommand\refimpliesref[2]{\(\text{#1} \Rightarrow \text{#2}\)}
 \newcommand\tpmbase[2]{\left.\frac{\partial}{\partial #1}\right\lvert_{#2}}

@@ -5,7 +5,7 @@
 %     centering
 % ]{geometry}
 \input{preamble}
-\usepackage{natbib}
+\usepackage[numbers]{natbib}
 
 \pgfplotsset{%
     defaultplot/.style={%
@@ -40,23 +40,33 @@
 \nocite{suhubi} % Chapter 9
 \begin{thmbox}
 \begin{definition}
-\(X, Y\)を実Banach空間とし，\(U\)をその開集合とする．
+\(X, Y\)をBanach空間とし，\(U\)をその開集合とする．
 関数\(f \colon U \to Y\)が\(x \in U\)において\(h \in X\)方向に微分可能であるとは，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lvert s \rvert \leq \delta\)ならば
 \begin{align}
     \lVert f(x + s h) - f(x) - s g(x, h) \rVert_Y \leq \varepsilon \lvert s \rvert \mathlabel{directional-derivative}
 \end{align}
 となるような\(g(x, h)\)が存在することをいう．
 任意の\(h \in X\)について\(g(x, h)\)が存在するとき，
-\(f\)は\(x\)において\keyword{Gateaux微分可能}(Gateaux differentiable)であるという．
+\(f\)は\(x\)において\keyword{Gateaux{\footnotemark}微分可能}(Gateaux differentiable)であるという．
 このとき\(g(x, \placeholder) \colon X \to {\Real}\)を\(f'(x)\)と表し，\(f\)の\(x\)における\keyword{Gateaux導関数}(Gateaux derivative)という．
 \end{definition}
 \end{thmbox}
 
-Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \lambda f' (x)(h)\)が成り立つ．
-これは\mathref{directional-derivative}が成り立つとき，\(\lvert s \lambda \rvert \leq \delta_0\)となるように\(s\)をとれば\(\lVert f(x + s \lambda h) - f(x) - s \lambda g(x, h) \rVert_Y \leq \varepsilon \lvert \lambda t \rvert\)
-となることからわかる．
+\footnotetext{\pronunciation{René Gateaux (1889--1914)}{fr}{ʁəne gɑto}{ルネ・ガトー}}
 
-一方で，通常の微分と異なり，加法性\(f'(x)(u + v) = f'(x)(u) + f'(q)(v)\)は一般には成り立たない．
+% 山田 \delta_G f(x; h)
+% 増田 df(x_0; h)
+% Şuhubi Df(x)(h)
+
+Gateaux導関数を表す記号は著者によって\(\delta_G f(x; h)\) \citep{yamada}や\(df(x; h)\) \citep{masuda}など様々なものが用いられ，特に広く使われている記号はない．
+文献によっては線型性をみたすものに限りGateaux導関数と呼ぶ\citep{theoretical-numerical-analysis}が，
+ここではそれを要請しない．
+
+線型性を要請しなくても\(1\)次同次性は常にみたされる．
+すなわち任意の\(\lambda \in {\Real}\)について\(f'(x)(\lambda h) = \lambda f' (x)(h)\)が成り立つ．
+このことは定義からすぐに確認できる．
+
+一方で加法性\(f'(x)(u + v) = f'(x)(u) + f'(q)(v)\)は一般には成り立たない．
 例えば\(f \colon {\Real}^2 \mapsto {\Real}\)を
 \begin{numcases}
     {f \colon (x_1, x_2) \mapsto}
@@ -81,26 +91,28 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
 \begin{thmbox}
 \begin{definition}
 \(X, Y\)を実Banach空間とし，\(U\)をその開集合とする．
-関数\(f \colon U \to Y\)が\(x \in U\)において\keyword{Fréchet微分可能}(Fréchet differentiable)であるとは，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lVert h \rVert_X \leq \delta\)ならば
+関数\(f \colon U \to Y\)が\(x \in U\)において\keyword{Fréchet{\footnotemark}微分可能}(Fréchet differentiable)あるいは単に微分可能であるとは，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(\lVert h \rVert_X \leq \delta\)ならば
 \begin{align}
     \lVert f(x + h) - f(x) - Df(x) h \rVert_Y \leq \varepsilon \lVert h \rVert_X \mathlabel{frechet-derivative}
 \end{align}
-となるような連続な線型写像\(Df(x) \colon U \to Y\)が存在することをいう．
-この\(Df(x)\)を\(f\)の\(x\)における\keyword{Fréchet導関数}(Fréchet derivative)という．
+となるような連続線型写像\(Df(x) \colon U \to Y\)が存在することをいう．
+この\(Df(x)\)を\(f\)の\(x\)における\keyword{Fréchet導関数}(Fréchet derivative)あるいは単に導関数という．
 \end{definition}
 \end{thmbox}
+
+\footnotetext{\pronunciation{Maurice Fréchet (1878--1973)}{fr}{mɔʁis fʁeʃɛ}{モリス・フレシェ}}
 
 % Postmodern Analysis p. 108
 \nocite{postmodern-analysis}
 \({\Real}^n\)から\({\Real}^m\)への写像と同様に，Banach空間からBanach空間への写像についても偏微分を定義することができる．
 \(\tuple{X_1, \lVert \placeholder \rVert_{X_1}}, \ldots, \tuple{X_n, \lVert \placeholder \rVert_{X_n}}\)をBanach空間とし，\(X\)をそれらの直積空間\(\tuple{X_1 \times \cdots \times X_n, \lVert \placeholder \rVert_{X_1} + \cdots + \lVert \placeholder \rVert_{X_n}}\)とする．
-\(f \colon X \to Y\)が\(x \in X\)において第\(j\)成分に関して\keyword{偏Fréchet微分可能}(partially Fréchet differentiable)あるいは単に偏微分可能であるとは，ある有界線型作用素\(A(x) \colon X_j \to {\Real}\)が存在し，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(h_j \in X_j\)が\(\lVert h_j \rVert_{X_j} \leq \delta\)をみたすならば
+\(f \colon X \to Y\)が\(x \in X\)において第\(j\)成分に関して\keyword{偏Fréchet微分可能}(partially Fréchet differentiable)あるいは単に偏微分可能であるとは，ある連続線型作用素\(A(x) \colon X_j \to {\Real}\)が存在し，任意の\(\varepsilon > 0\)について，ある\(\delta > 0\)が存在して，\(h_j \in X_j\)が\(\lVert h_j \rVert_{X_j} \leq \delta\)をみたすならば
 \begin{align}
     \lVert f(x_1, \ldots, x_j + h_j, \ldots, x_n) - f(x) - A(x) h_j \rVert_{Y} \leq \varepsilon \lVert h_j \rVert_{X_j}
     \mathlabel{partial-frechet-derivative}
 \end{align}
-ことをいう．このとき\(A(x)\)を\(f\)の第\(j\)成分に関する\keyword{偏Fréchet導関数}(partial Fréchet derivative)あるいは偏導関数といい，\(D_jf(x)\)と表す．
-\(f\)が\(X\)において(Fréchet)微分可能ならば，第\(j\)成分に関して偏微分可能である．
+ことをいう．このとき\(A(x)\)を\(f\)の第\(j\)成分に関する\keyword{偏Fréchet導関数}(partial Fréchet derivative)あるいは単に偏導関数といい，\(D_jf(x)\)と表す．
+\(f\)が\(X\)において微分可能ならば，第\(j\)成分に関して偏微分可能である．
 このことは次のように確かめられる．
 写像\(\iota_j \colon V_j \to V_1 \times \cdots \times V_n\)を以下で定める．
 \begin{align*}
@@ -134,7 +146,7 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
 \begin{theorem}
 \(U\)を\(X\)の開集合とし，\(f \colon U \to Y\)とする．
 \(f\)が\(x \in U\)においてFréchet微分可能ならばGateaux微分可能である．
-また\(Df(x)h\)が意味をもつ任意の\(h\)について\(Df(x)h = f'(x)(h)\)が成り立つ．\theoremlabel{frechet-gateaux}
+また\(Df(x)h\)が意味をもつような任意の\(h\)について\(Df(x)h = f'(x)(h)\)が成り立つ．\theoremlabel{frechet-gateaux}
 \end{theorem}
 \end{thmbox}
 
@@ -150,7 +162,7 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
 \begin{align}
     \lVert f(x + s h) - f(x) - s D(x)(h) \rVert_Y \leq \varepsilon \lvert s \rvert
 \end{align}
-となる．したがって\(\lVert h \rVert \leq \delta\)ならば\(f'(x)(h) = Df(x)h\)が成り立つ．
+となる．したがって\(\lVert h \rVert_X \leq \delta\)ならば\(f'(x)(h) = Df(x)h\)が成り立つ．
 \end{proof}
 
 \section{曲線の長さ}
@@ -257,13 +269,14 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
 この種の問題をここでは次のように定式化する．
 \(U\)を\({\Real}^n\)の開集合とし，\(f \colon U \times {\Real}^n \to {\Real}\)を連続関数とする．
 関数（曲線）の空間として\(X = C^1([a, b], {\Real}^n)\)をとる．
-この空間のノルムは
+この空間のノルムとしては
 \begin{align}
     \lVert \gamma \rVert_{C^1([a, b], {\Real}^n)} =
     \sup_{t \in [a, b]} \lVert \gamma(t) \rVert_{{\Real}^n} + \sup_{t \in [a, b]} \lVert \dot{\gamma}(t) \rVert_{{\Real}^n}
     \mathlabel{c1-norm}
 \end{align}
-である．\(X_{\symup{P}, \symup{Q}} := \{\gamma \in X \mid \gamma(a) = \symup{P}, \gamma(b) = \symup{Q}\}\)と表すとき，次を最小化する\(\gamma \in X_{\symup{P}, \symup{Q}}\)を求めよ．
+をとる\footnote{このノルムによって\(X\)はBanach空間となる．}．
+\(X_{\symup{P}, \symup{Q}} := \{\gamma \in X \mid \gamma(a) = \symup{P}, \gamma(b) = \symup{Q}\}\)と表すとき，次を最小化する\(\gamma \in X_{\symup{P}, \symup{Q}}\)を求めよ．
 \begin{align}
     J(\gamma) = \int_a^b f(\gamma(t), \dot{\gamma}(t))dt. \problemlabel{variational-problem}
 \end{align}
@@ -420,11 +433,50 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
 
 \section{地球のモデル}
 
+\begin{figure}
+\centering
+\tdplotsetmaincoords{60}{130}
+\begin{tikzpicture}[%
+    scale=3.4,
+    tdplot_main_coords
+]
+    \pgfmathsetmacro{\r}{1.0}
+
+    \pgfmathsetmacro\pangletheta{40}
+    \pgfmathsetmacro\panglephi{70}
+
+    \coordinate (O) at (0, 0, 0);
+    \node[left=2] at (0, 0, 0) {\(\origin\)};
+    \node[above=5, right=2] at (0, 0, 1) {\(\symup{N}\)};
+    \tdplotsetcoord{P}{\r}{\pangletheta}{\panglephi}
+
+    % PROJECTIONS
+    \draw[sLightGray, thin] plot[domain=0:90](
+        {\r * sin(\x) * cos(\panglephi)},
+        {\r * sin(\x) * sin(\panglephi)},
+        {\r * cos(\x)}
+    ) coordinate (projV);
+    \draw[sLightGray, thin] plot[domain=0:90]({\r * cos(\x)}, {\r * sin(\x)}, 0);
+    \draw[sLightGray, thin] (O)  -- ({\r * cos(\panglephi)}, {\r * sin(\panglephi)}, 0);
+    \tdplotdrawarc[sBlue, -stealth]{(O)}{0.45 * \r}{0}{\panglephi} {below=-1}{\(\xi_2\)};
+    \tdplotsetthetaplanecoords{\panglephi};
+    \tdplotdrawarc[sBlue, -stealth, tdplot_rotated_coords]{(0, 0, 0)}{0.22 * \r}{0}{\pangletheta}{right=3, above=-1}{\(\xi_1\)};
+
+    \draw[thick,-stealth] (0, 0, 0) -- (1.2 * \r, 0, 0) node[left=1, above=2]{};
+    \draw[thick,-stealth] (0, 0, 0) -- (0, 1.2 * \r, 0) node[above=2]{};
+    \draw[thick,-stealth] (0, 0, 0) -- (0,0, 1.2 * \r) node[below=3, left=1]{};
+
+    \draw[sBlue, -stealth] (O)  -- (P) node[above=2, right=1] {\(\symup{P}\)};
+\end{tikzpicture}
+\caption{動径を固定した球面座標系．}\figlabel{spherical-coordinate}
+\end{figure}
+
+
 地球上の\(2\)地点\(\symup{P}, \symup{Q}\)を最短で結ぶ曲線を求める．
 地中を掘って進むことは困難なので，それは不可能であるとする．
 単純化のため地表の構造物や地球が回転楕円体であることは無視し，地球を球面\(S^2 = \{\tuple{x_1, x_2, x_3} \mid x_1^2 + x_2^2 + x_3^2 = 1\}\)でモデル化する．
 
-計算をしやすくするため\(S^2\)の各点を球面座標系\(\xi = \tuple{\xi_0, \xi_1, \xi_2}\)で表す．
+計算をしやすくするため\(S^2\)の各点を球面座標系\(\xi = \tuple{\xi_0, \xi_1, \xi_2}\)で表す（\figref{spherical-coordinate}）．
 動径\(\xi_0\)は\(1\)に固定されるため，\(\xi_0\)を省略して\(\tuple{\xi_1, \xi_2}\)のように書く．
 天頂角あるいは余緯度\(\xi_1\) \((0 < \xi_1 < \pi)\)は緯度に応じて
 \begin{numcases}
@@ -581,30 +633,15 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
     = \sin^2 p_1
     \end{split}
 \end{gather*}
-が成り立つ．したがって計量\(g_p\)に対応する行列\(G_p\)は
-\begin{align*}
-    G_p =
-    \begin{pmatrix}
-        g_p(\partial_{\xi_1}, \partial_{\xi_1}) & g_p(\partial_{\xi_1}, \partial_{\xi_2}) \\
-        g_p(\partial_{\xi_2}, \partial_{\xi_1}) & g_p(\partial_{\xi_2}, \partial_{\xi_2})
-    \end{pmatrix}
-    =
-    \begin{pmatrix}
-        1 & 0 \\
-        0 & \sin^2 p_1
-    \end{pmatrix}
-\end{align*}
-となる．
-よって\(p\)における速度ベクトル
+が成り立つ．よって\(p\)における速度ベクトル
 \begin{align*}
     v = v_1 \tpmbase{\xi_1}{p} + v_2 \tpmbase{\xi_2}{p}
 \end{align*}
 について
 \begin{align}
     g_p(v, v)
-    &= v_1^2 g_p(\partial_{\xi_1}, \partial_{\xi_1}) + 2 v_1 v_2 g_p(\partial_{\xi_1}, \partial_{\xi_2}) + v_2^2 g_p(\partial_{\xi_2}, \partial_{\xi_2}) \notag \\
-    &= \begin{pmatrix} v_1 & v_2 \end{pmatrix} G_p \begin{pmatrix} v_1 \\ v_2 \end{pmatrix} \notag \\
-    &= v_1^2 + v_2^2 \sin^2 p_1 \mathlabel{great-circle-inner-product}
+    = v_1^2 g_p(\partial_{\xi_1}, \partial_{\xi_1}) + 2 v_1 v_2 g_p(\partial_{\xi_1}, \partial_{\xi_2}) + v_2^2 g_p(\partial_{\xi_2}, \partial_{\xi_2})
+    = v_1^2 + v_2^2 \sin^2 p_1 \mathlabel{great-circle-inner-product}
 \end{align}
 となる．
 
@@ -624,14 +661,13 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
     f\colon (y, u) \mapsto \frac{u_1^2 + u_2^2 \sin^2 y_1}{2}
 \end{gather*}
 と定義すると，\(\gamma\)のエネルギーは
-\begin{align}
+\begin{align*}
     E(q) = \int_0^T f(q(t), \dot{q}(t)) dt
     = \int_0^T \frac{(\dot{\theta}(t))^2 + (\dot{\varphi}(t))^2 \sin^2 \theta(t)}{2} dt
-    \mathlabel{great-circle-energy}
-\end{align}
+\end{align*}
 と表すことができる．\(f\)の\(\coord{q(t), \dot{q}(t)}\)における偏導関数は
 \begin{gather*}
-    D_1 f(q(t), v(t))
+    D_1 f(q(t), \dot{q}(t))
     =
     \begin{pmatrix}
         (\dot{\varphi}(t))^2 \sin \theta(t) \cos \theta(t)
@@ -639,7 +675,7 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
         0
     \end{pmatrix},
     \\
-    D_2 f(q(t), v(t))
+    D_2 f(q(t), \dot{q}(t))
     =
     \begin{pmatrix}
         \dot{\theta}(t)
@@ -650,8 +686,8 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
 である．したがってこの問題のEuler--Lagrange方程式の積分形は
 \begin{numcases}
     {}
-    \dot{\theta}(t) = \int_0^t (\dot{\varphi}(\tau))^2 \sin \theta(\tau) \cos \theta(\tau) d\tau + k_1 \\
-    \dot{\varphi}(t) \sin^2 \theta(t) = k_2
+    \dot{\theta}(t) = \int_0^t (\dot{\varphi}(\tau))^2 \sin \theta(\tau) \cos \theta(\tau) d\tau + k_1 \nonumber \\
+    \dot{\varphi}(t) \sin^2 \theta(t) = k_2 \nonumber
 \end{numcases}
 となる．
 右辺の形から\(\dot{\theta}, \dot{\varphi}\)もまた\(C^1\)級である．
@@ -661,8 +697,7 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
     \ddot{\theta}(t) = \dot{\varphi}^2(t) \sin \theta(t) \cos \theta(t) \mathlabel{great-circle-euler-lagrange1} \\
     \ddot{\varphi}(t) = - 2 \frac{\dot{\theta}(t)}{\tan \theta(t)}\dot{\varphi}(t) \mathlabel{great-circle-euler-lagrange2}
 \end{numcases}
-エネルギー（\mathref{great-circle-energy}）は\(\theta\)と\(\varphi\)の関係のみで定まる．
-したがって\(\theta\)を\(\varphi\)の関数とみなす．
+エネルギーは\(\theta\)と\(\varphi\)の関係のみで定まるため，\(\theta\)を\(\varphi\)の関数とみなす．
 このとき\mathref{great-circle-euler-lagrange1}の左辺は
 \begin{align}
     \ddot{\theta}
@@ -718,15 +753,18 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
 したがって
 \begin{numcases}
     {}
-    \dot{\varphi} = 0 \\
-    \frac{d^2}{d\varphi^2} \frac{1}{\tan \theta} + \frac{1}{\tan \theta} = 0 \mathlabel{great-circle-simple-harmonic-motion}
+    \dot{\varphi} = 0 \mathlabel{great-circle-phi-const} \\
+    \frac{d^2}{d\varphi^2} \frac{1}{\tan \theta} + \frac{1}{\tan \theta} = 0. \mathlabel{great-circle-simple-harmonic-motion}
 \end{numcases}
+\mathref{great-circle-phi-const}は方位角が一定であることを表す．
+これは\(\symup{P}, \symup{Q}\)が同一の子午線上にある場合であり，その子午線の\(\symup{P}\)と\(\symup{Q}\)の間の部分が最短の経路である．
+
 \mathref{great-circle-simple-harmonic-motion}は，\(y(\varphi) = \inlinefrac{1}{\tan \theta(\varphi)}\), \(D = \inlinefrac{d}{d\varphi}\)と置いて微分方程式
 \begin{align}
     (D^2  + 1) y = 0 \label{great-circle-ode-operator}
 \end{align}
 に帰着される．
-代数方程式\(\lambda^2 + 1 = 0\)の根が\(\lambda = \pm i\)であるから微分方程式\ref{great-circle-ode-operator}の解空間は
+代数方程式\(\lambda^2 + 1 = 0\)の根が\(\lambda = \pm i\)であるから微分方程式(\ref{great-circle-ode-operator})の解空間は
 \begin{align*}
 \Span \{\realpart e^{i\varphi}, \imaginarypart e^{i\varphi}, \realpart e^{-i\varphi}, \imaginarypart e^{-i\varphi}\} = \Span \{\cos \varphi, \sin \varphi\}
 \end{align*}
@@ -745,8 +783,12 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
 \begin{align*}
     n_\bot = \begin{pmatrix} A \\ B \\ -1 \end{pmatrix}
 \end{align*}
-と曲線\(\iota \circ \gamma\)上の点が常に直交していること，すなわち\(\gamma\)の像が大円の一部であることを表す．
-これで目的は達せられたが，せっかくなので\(A, B\)を具体的に求めておこう．
+と\(\symup{P}, \symup{Q}\)を結ぶ曲線が直交していることを表す．
+したがって求める曲線（の像）は球面\(S^2\)を中心\(\symup{O}\)を通る平面で切ったときにできる円の\(\symup{P}, \symup{Q}\)の間の範囲である．
+これは局所座標を適当にとりかえることで\(S^2\)の任意の点で成り立つ．
+
+ベクトル\(n_\bot\)は\(\symup{O}\symup{P}, \symup{O}\symup{Q}\)と直交するので\(n_\bot \mathbin{\|} \overrightarrow{\symup{O}\symup{P}} \times \overrightarrow{\symup{O}\symup{Q}}\)である．
+実際に\(A, B\)を求めてそれを確認できる．
 \(\symup{P} = \iota(\theta(0), \varphi(0)) = \coord{\symup{P}_1, \symup{P}_2, \symup{P}_3}, \symup{Q} = \iota(\theta(T), \varphi(T)) = \coord{\symup{Q}_1, \symup{Q}_2, \symup{Q}_3}\)とすると
 \begin{numcases}
     {}
@@ -780,39 +822,49 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
     \end{pmatrix}
     \\
     &=
-    \frac{1}{\symup{P}_x\symup{Q}_y - \symup{P}_y \symup{Q}_x}
+    \frac{1}{\symup{P}_1\symup{Q}_2 - \symup{P}_y \symup{Q}_x}
     \begin{pmatrix}
-        \symup{P}_z \symup{Q}_y - \symup{P}_y \symup{Q}_z \\
-        \symup{P}_x \symup{Q}_z - \symup{P}_z \symup{Q}_x
+        \symup{P}_3 \symup{Q}_2 - \symup{P}_2 \symup{Q}_3 \\
+        \symup{P}_1 \symup{Q}_3 - \symup{P}_3 \symup{Q}_1
     \end{pmatrix}.
 \end{align*}
 したがって
 \begin{align*}
     n_\bot \mathbin{\|}
         \begin{pmatrix}
-            \symup{P}_y \symup{Q}_z - \symup{P}_z \symup{Q}_y \\
-            \symup{P}_z \symup{Q}_x - \symup{P}_x \symup{Q}_z \\
-            \symup{P}_x\symup{Q}_y - \symup{P}_y \symup{Q}_x
+            \symup{P}_y \symup{Q}_3 - \symup{P}_3 \symup{Q}_2 \\
+            \symup{P}_3 \symup{Q}_1 - \symup{P}_1 \symup{Q}_3 \\
+            \symup{P}_1 \symup{Q}_2 - \symup{P}_2 \symup{Q}_1
         \end{pmatrix}
-        = \overrightarrow{\symup{O}\symup{P}} \times \overrightarrow{\symup{O}\symup{Q}}.
+        = \geovec{O}{P} \times \geovec{O}{Q}.
 \end{align*}
-半径\(R\)の球面\(S^2(R)\)の\(2\)点\(\symup{P}, \symup{Q}\)の距離は，
-\(\overrightarrow{\symup{O}\symup{P}}, \overrightarrow{\symup{O}\symup{Q}}\)
-のなす角に等しい．
+
+
+一般に球面を中心を通る平面で切ったときにできる円は\keyword{大円}(great circle)と呼ばれる．
+最短の曲線が大円のうち\(\symup{P}, \symup{Q}\)の間の部分なので，その長さは\(\geovec{O}{P}, \geovec{O}{Q}\)のなす角に等しい．
+ゆえに\(S^2\)の\(2\)点の距離\(d \colon S^2 \times S^2 \to {\Real}_{\mathord{+}}\)は
 \begin{align*}
+    d \colon \tuple{\symup{P}, \symup{Q}} \mapsto
+    \arccos \left(\overrightarrow{\symup{O}\symup{P}} \cdot \overrightarrow{\symup{O}\symup{Q}}\right)
+\end{align*}
+と表すことができる．
+地球を半径\(R\)の球面\(S^2(R)\)としてモデル化した場合は
+\begin{align*}
+    d \colon \tuple{\symup{P}, \symup{Q}} \mapsto
     R \arccos \left(%
         \frac{%
-            \overrightarrow{\symup{O}\symup{P}}
+            \geovec{O}{P}
         }{%
-            \left\lVert \overrightarrow{\symup{O}\symup{P}} \right\rVert
+            \left\lVert \geovec{O}{P} \right\rVert
         } \cdot
         \frac{%
-            \overrightarrow{\symup{O}\symup{Q}}
+            \geovec{O}{Q}
         }{%
-            \left\lVert \overrightarrow{\symup{O}\symup{Q}} \right\rVert
+            \left\lVert \geovec{O}{Q} \right\rVert
         }
     \right)
 \end{align*}
+となる．
 
 \begin{figure}
 \centering
@@ -821,19 +873,19 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
     scale=3.4,
     tdplot_main_coords
 ]
-    \pgfmathsetmacro{\r}{1.0}
+    \pgfmathsetmacro{\r}{1.0};
 
-    \pgfmathsetmacro\panglephi{25}
-    \pgfmathsetmacro\pangletheta{50}
+    \pgfmathsetmacro\panglephi{25};
+    \pgfmathsetmacro\pangletheta{50};
 
-    \pgfmathsetmacro\qanglephi{80}
-    \pgfmathsetmacro\qangletheta{40}
+    \pgfmathsetmacro\qanglephi{80};
+    \pgfmathsetmacro\qangletheta{40};
 
     \coordinate (O) at (0, 0, 0);
     \node[left=2] at (0, 0, 0) {\(\origin\)};
     \node[above=5, right=2] at (0, 0, 1) {\(\symup{N}\)};
-    \tdplotsetcoord{P}{\r}{\pangletheta}{\panglephi}
-    \tdplotsetcoord{Q}{\r}{\qangletheta}{\qanglephi}
+    \tdplotsetcoord{P}{\r}{\pangletheta}{\panglephi};
+    \tdplotsetcoord{Q}{\r}{\qangletheta}{\qanglephi};
 
     % PROJECTIONS
     \draw[sLightGray, thin] plot[domain=0:90](
@@ -844,19 +896,14 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
     \draw[sLightGray, thin] plot[domain=0:90]({\r * cos(\x)}, {\r * sin(\x)}, 0);
     \draw[sLightGray, thin] (O)  -- ({\r * cos(\panglephi)}, {\r * sin(\panglephi)}, 0);
     \draw[sLightGray, thin] (O)  -- ({\r * cos(\qanglephi)}, {\r * sin(\qanglephi)}, 0);
-    \tdplotdrawarc[sRed, -stealth]{(O)}{0.45 * \r}{0}{\qanglephi} {below=-1}{\(\varphi_2\)}
     \draw[sLightGray, thin] plot[domain=0:90](
         {\r * sin(\x) * cos(\panglephi)},
         {\r * sin(\x) * sin(\panglephi)},
         {\r * cos(\x)}
     ) coordinate (projP);
 
-    \tdplotsetthetaplanecoords{\panglephi}
-    \tdplotdrawarc[sBlue, -stealth, tdplot_rotated_coords]{(0, 0, 0)}{0.18 * \r}{0}{\pangletheta}{left=4, above=-1}{\(\theta_1\)}
-    \tdplotsetthetaplanecoords{\qanglephi}
-    \tdplotdrawarc[sRed, -stealth, tdplot_rotated_coords]{(0, 0, 0)}{0.22 * \r}{0}{\qangletheta}{right=3, above=-1}{\(\theta_2\)}
-
-    \tdplotdrawarc[sBlue, -stealth]{(O)}{0.2 * \r}{0}{\panglephi} {below=-1}{\(\varphi_1\)}
+    \tdplotsetthetaplanecoords{\panglephi};
+    \tdplotsetthetaplanecoords{\qanglephi};
 
     \draw[thick,-stealth] (0, 0, 0) -- (1.2 * \r, 0, 0) node[left=1, above=2]{};
     \draw[thick,-stealth] (0, 0, 0) -- (0, 1.2 * \r, 0) node[above=2]{};
@@ -865,12 +912,12 @@ Gateaux導関数は\(1\)次同次である．すなわち\(f'(x)(\lambda h) = \l
     \tdplotdefinepoints(0, 0, 0)%
         ({\r * sin(\pangletheta) * cos(\panglephi)}, {\r * sin(\pangletheta) * sin(\panglephi)}, {\r * cos(\pangletheta)})%
         ({\r * sin(\qangletheta) * cos(\qanglephi)}, {\r * sin(\qangletheta) * sin(\qanglephi)}, {\r * cos(\qangletheta)})
-    \tdplotdrawpolytopearc[sGreen]{1}{anchor=west}{}
+    \tdplotdrawpolytopearc[sGreen]{1}{anchor=west}{};
 
     \draw[sBlue, -stealth] (O)  -- (P) node[above=4, left=2] {\(\symup{P}\)};
-    \draw[sRed, -stealth] (O)  -- (Q) node [below=10, left=-3] {\(\symup{Q}\)};
+    \draw[sRed, -stealth] (O)  -- (Q) node [above=3, right=2] {\(\symup{Q}\)};
 
-    \node[sGreen, right=40, above=-5] at ({\r * sin(30) * cos(50)}, {\r * sin(30) * sin(50)}, {\r * cos(30)}) {\(\displaystyle R \arccos \left(\frac{\overrightarrow{\symup{O}\symup{P}}}{\left\lVert \overrightarrow{\symup{O}\symup{P}} \right\rVert} \cdot \frac{\overrightarrow{\symup{O}\symup{Q}}}{\left\lVert \overrightarrow{\symup{O}\symup{Q}} \right\rVert}\right)\)};
+    \node[sGreen, right=60, above=2] at ({\r * sin(30) * cos(50)}, {\r * sin(30) * sin(50)}, {\r * cos(30)}) {\(\displaystyle d(\symup{P}, \symup{Q}) = \arccos \left(\overrightarrow{\symup{O}\symup{P}} \cdot \overrightarrow{\symup{O}\symup{Q}}\right)\)};
 
 \end{tikzpicture}
 \end{figure}
